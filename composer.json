@@ -1,0 +1,34 @@
+{
+	"name": "ps14/ps14_component",
+	"type": "typo3-cms-extension",
+	"description": "TYPO3 extension for provide basic (react) components",
+	"keywords": [
+		"TYPO3",
+		"extension",
+		"components"
+	],
+	"homepage": "http://ps14.de/",
+	"require": {
+		"typo3/cms-core": "^13.4"
+	},
+	"suggest": {
+		"ps14/ps14_site": "^2.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"Ps14\\Component\\": "Classes"
+		}
+	},
+	"license": "closed",
+	"authors": [
+		{
+			"name": "Christian Pschorr",
+			"email": "pschorr.christian@gmail.com"
+		}
+	],
+	"extra": {
+		"typo3/cms": {
+			"extension-key": "ps14_component"
+		}
+	}
+}
