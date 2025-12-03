@@ -1,4 +1,27 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:button>
+
+        Namespace:
+          xmlns:co="http://typo3.org/ns/Ps14/Component/Component/ComponentCollection"
+
+        Parameter für <co:button>:
+        - variant: (string) z.B. "default", "primary" – bestimmt die Button-Variante/Klasse
+        - disabled: (bool|string) true/false – deaktiviert den Button
+        - prefixIcon: (string) Pfad zu einem Icon, das vor dem Button-Text angezeigt wird
+        - suffixIcon: (string) Pfad zu einem Icon, das nach dem Button-Text angezeigt wird
+        - id: (string) optionale ID für den Button
+        - class: (string) optionale zusätzliche CSS-Klassen für den Button
+
+        Beispielhafte Aufrufe:
+        <co:button>Button</co:button>
+        <co:button variant="default" disabled="true">Button Disabled</co:button>
+        <co:button variant="default" prefixIcon="/fileadmin/icons/star-fill.svg">Button Star Prefix</co:button>
+        <co:button.icon variant="primary" icon="/fileadmin/icons/star-fill.svg" label="Button Star" />
+    -->
+    </f:comment>
+
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="id" type="string" optional="{true}" />
