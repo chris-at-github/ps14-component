@@ -1,12 +1,14 @@
-<html
-  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-  data-namespace-typo3-fluid="true"
->
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:argument name="icon" type="string" />
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="id" type="string" optional="{true}" />
+    <f:argument name="label" type="string" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
 
-<f:argument name="variant" type="string" optional="{true}" default="primary" />
-<f:argument name="id" type="string" optional="{true}" />
+    <co:cssClassCollect name="class" value="button--{variant}" condition="{variant}" />
 
-<button class="button icon">
-    <f:slot />
-</button>
+    <button id="{id}" class="button button--icon {class}" {f:if(condition: disabled, then: 'disabled="disabled"')} aria-label="{label}">
+        <fo:svg.inline source="{icon}" class="button__icon" />
+    </button>
 </html>

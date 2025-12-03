@@ -1,12 +1,18 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="id" type="string" optional="{true}" />
+    <f:argument name="prefixIcon" type="string" optional="{true}" />
+    <f:argument name="suffixIcon" type="string" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
 
     <co:cssClassCollect name="class" value="button--{variant}" condition="{variant}" />
+    <co:cssClassCollect name="class" value="button--icon-prefix" condition="{prefixIcon}" />
+    <co:cssClassCollect name="class" value="button--icon-suffix" condition="{suffixIcon}" />
 
     <button id="{id}" class="button {class}" {f:if(condition: disabled, then: 'disabled="disabled"')}>
+        <f:if condition="{prefixIcon}"><fo:svg.inline source="{prefixIcon}" class="button__icon" /></f:if>
         <f:slot />
+        <f:if condition="{suffixIcon}"><fo:svg.inline source="{suffixIcon}" class="button__icon" /></f:if>
     </button>
 </html>
