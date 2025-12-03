@@ -1,0 +1,11 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" data-namespace-typo3-fluid="true">
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="id" type="string" optional="{true}" />
+
+    <co:cssClassCollect name="class" value="button--{variant}" condition="{variant}" />
+
+    <button id="{id}" class="button {class}">
+        <f:slot />
+    </button>
+</html>
