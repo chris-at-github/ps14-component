@@ -2,10 +2,11 @@
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="id" type="string" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
 
     <co:cssClassCollect name="class" value="button--{variant}" condition="{variant}" />
 
-    <button id="{id}" class="button {class}">
+    <button id="{id}" class="button {class}" {f:if(condition: disabled, then: 'disabled="disabled"')}>
         <f:slot />
     </button>
 </html>
