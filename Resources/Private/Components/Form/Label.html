@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
       data-namespace-typo3-fluid="true">
-<f:comment>
+    <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:form.textfield>
 
@@ -22,50 +22,15 @@
         <co:form.textfield id="form-field--u45hoi3" name="password" label="Passwort" required="true" description="Das Passwort muss mindestens 8 Zeichen lang sein..." type="password" value="pschorr-christian" errors="{0: 'Es darf nicht das gleiche Passwort...', 1: 'Das Passwort ist zu schwach...'}" errorClass="form-field--error" />
         <co:form.textfield id="form-field--hiowek" name="mail" label="E-Mail" required="true" type="email" value="c.pschorr@datamints.com" />
     -->
-</f:comment>
-
-<f:argument name="id" type="string" default="form-field--{fo:randomId()}" />
-<f:argument name="name" type="string" />
-<f:argument name="label" type="string" />
-<f:argument name="value" type="string" optional="{true}" />
-<f:argument name="required" type="boolean" optional="{true}" />
-<f:argument name="description" type="string" optional="{true}" />
-<f:argument name="type" type="string" default="text" />
-<f:argument name="class" type="string" optional="{true}" />
-<f:argument name="errors" type="array" optional="{true}" />
-
-<div class="form-item">
-    <co:form.label id="{id}" label="{label}" required="{required}" />
-    <co:form.description description="{description}" />
-
-    <input
-      type="{type}"
-      id="{id}"
-      name="{name}"
-      class="form-field form-field--default form-field--{type} {class} {f:if(condition: errors, then: 'form-field--error')}"
-      value="{value}"
-      {f:if(condition: required, then: 'required')}
-    >
-    <f:if condition="{errors}">
-        <ul class="form-error">
-            <f:for each="{errors}" as="error">
-                <li class="form-error__message">{error}</li>
-            </f:for>
-        </ul>
-    </f:if>
-
-    <f:comment>
-    <!--
-    <f:if condition="{property}">
-        <f:form.textfield
-          id="{id}"
-          name="{name}"
-          value="{value}"
-          type="{type}"
-          class="form-field form-field--default form-field--{type} {class} {f:if(condition: errors, then: errorClass)}"
-          required="{required}" />
-    </f:if>
-    -->
     </f:comment>
-</div>
+
+    <f:argument name="id" type="string" />
+    <f:argument name="label" type="string" />
+    <f:argument name="required" type="boolean" optional="{true}" />
+
+    <label class="form-label" for="{id}">{label}
+        <f:if condition="{required}">
+            <span class="form-label__required">(erforderlich)</span>
+        </f:if>
+    </label>
 </html>
