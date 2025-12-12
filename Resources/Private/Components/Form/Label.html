@@ -23,7 +23,7 @@
     <f:argument name="label" type="string" />
     <f:argument name="required" type="boolean" optional="{true}" />
 
-    <label class="form-label" for="{id}">{label}
+    <label class="form-label" for="{id}"><f:format.raw>{label}</f:format.raw>
         <f:if condition="{required}">
             <span class="form-label__required"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:label.required" /></span>
         </f:if>
