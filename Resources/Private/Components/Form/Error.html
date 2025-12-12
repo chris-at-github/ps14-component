@@ -1,0 +1,42 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:form.error>
+
+        Parameter:
+        - errors: (array) Fehlernachrichten als Array (optional)
+        - id: (string) ID des zugehörigen Feldes (optional)
+
+        Beschreibung:
+        Gibt Fehlernachrichten für ein Formularfeld aus. Bei einem Fehler wird ein <div> mit der Klasse "form-error" und einer einzelnen Fehlermeldung ausgegeben. Bei mehreren Fehlern wird eine <ul> mit der Klasse "form-error" und mehreren <li> ausgegeben. Die Fehler werden als Array übergeben.
+
+        Beispielhafte Aufrufe:
+        <co:form.error errors="{0: 'Bitte geben Sie einen Namen an.'}" />
+        <co:form.error errors="{0: 'Das Passwort ist zu kurz.', 1: 'Das Passwort ist zu schwach.'}" id="form-field--u45hoi3" />
+    -->
+    </f:comment>
+
+    <f:argument name="errors" type="string[]" optional="{true}" />
+    <f:argument name="id" type="string" optional="{true}" />
+
+    <f:if condition="{errors}">
+        <f:if condition="{errors -> f:count()} == 1">
+            <f:then>
+                <div class="form-error">
+                    <f:for each="{errors}" as="error">
+                        <div class="form-error__message">{error}</div>
+                    </f:for>
+                </div>
+            </f:then>
+            <f:else>
+                <ul class="form-error">
+                    <f:for each="{errors}" as="error">
+                        <li class="form-error__message">{error}</li>
+                    </f:for>
+                </ul>
+            </f:else>
+        </f:if>
+    </f:if>
+</html>
