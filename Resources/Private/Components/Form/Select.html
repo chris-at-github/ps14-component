@@ -1,0 +1,76 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" xmlns="http://www.w3.org/1999/html"
+      data-namespace-typo3-fluid="true">
+    <f:comment>
+        <!--
+            Dokumentation: Fluid-Komponente <co:form.select>
+
+            Parameter:
+            - id: (string) ID des Feldes (optional, wird automatisch generiert, falls leer)
+            - name: (string) Name des Feldes (Pflicht)
+            - value: (string) Vorbelegter Wert (optional)
+            - label: (string) Label-Text (Pflicht)
+            - required: (bool|string) true/false – zeigt "erforderlich" an und setzt das required-Attribut (optional)
+            - description: (string) Beschreibungstext unter dem Label (optional)
+            - class: (string) Zusätzliche CSS-Klassen (optional)
+            - errors: (array) Fehlernachrichten als Array (optional)
+            - options: (array) Array mit Select-Optionen, z.B. [{value: '1', label: 'Option 1'}] (Pflicht)
+
+            Beschreibung:
+            Diese Komponente erzeugt ein <select>-Feld mit Label, Beschreibung, Fehlerausgabe und dynamischen Optionen. Die CSS-Klassen werden automatisch ergänzt. Die Option mit value==value wird als ausgewählt markiert.
+
+            Beispielhafte Aufrufe:
+            <co:form.select id="form-field--country" name="country" label="Land" options="{0: {value: 'de', label: 'Deutschland'}, 1: {value: 'at', label: 'Österreich'}}" value="de" />
+            <co:form.select name="gender" label="Geschlecht" required="true" options="{0: {value: 'm', label: 'Männlich'}, 1: {value: 'w', label: 'Weiblich'}}" />
+        -->
+    </f:comment>
+
+    <f:argument name="id" type="string" default="" />
+    <f:argument name="name" type="string" />
+    <f:argument name="label" type="string" />
+    <f:argument name="value" type="string" optional="{true}" />
+    <f:argument name="required" type="boolean" optional="{true}" />
+    <f:argument name="description" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="errors" type="string[]" optional="{true}" />
+    <f:argument name="options" type="array" optional="{true}" />
+
+    <f:if condition="{id} == ''">
+        <f:variable name="id">form-field--{fo:randomId()}</f:variable>
+    </f:if>
+
+    <co:cssClassCollect name="class" value="form-field form-field--default form-field--select" />
+    <co:cssClassCollect name="class" value="form-field--error" condition="{errors}" />
+
+    <div class="form-item">
+        <co:form.label id="{id}" label="{label}" required="{required}" />
+        <co:form.description description="{description}" />
+
+        <select
+          id="{id}"
+          name="{name}"
+          class="{class}"
+          {f:if(condition: required, then: 'required')}>
+            <f:for each="{options}" as="option">
+                <option value="{option.value}" {f:if(condition: '{option.value} == {value}', then: 'selected="selected"')}>{option.label}</option>
+            </f:for>
+        </select>
+
+        <co:form.error errors="{errors}" />
+    </div>
+
+<f:comment>
+    <!--
+    <f:if condition="{property}">
+        <f:form.textfield
+          id="{id}"
+          name="{name}"
+          value="{value}"
+          type="{type}"
+          class="form-field form-field--default form-field--{type} {class} {f:if(condition: errors, then: errorClass)}"
+          required="{required}" />
+    </f:if>
+    -->
+</f:comment>
+</html>
