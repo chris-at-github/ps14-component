@@ -1,5 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
       data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
@@ -20,18 +21,21 @@
 
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="id" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+
+    <co:cssClassCollect name="class" value="form-error" />
 
     <f:if condition="{errors}">
         <f:if condition="{errors -> f:count()} == 1">
             <f:then>
-                <div class="form-error">
+                <div class="{class}">
                     <f:for each="{errors}" as="error">
                         <div class="form-error__message">{error}</div>
                     </f:for>
                 </div>
             </f:then>
             <f:else>
-                <ul class="form-error">
+                <ul class="{class}">
                     <f:for each="{errors}" as="error">
                         <li class="form-error__message">{error}</li>
                     </f:for>
