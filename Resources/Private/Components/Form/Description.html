@@ -1,7 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
     <f:argument name="description" type="string" default="" />
+    <f:argument name="class" type="string" default="" />
 
     <f:if condition="{description}">
-        <div class="form-description">{description}</div>
+        <div class="form-description {class}">{description}</div>
     </f:if>
 </html>
