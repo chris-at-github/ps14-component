@@ -1,0 +1,62 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+			xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+			data-namespace-typo3-fluid="true">
+	<f:comment>
+		<!--
+		 Dokumentation: Fluid-Komponente <co:form.radio>
+
+		 Parameter:
+		 - id: (string, optional) ID des Feldes (wird automatisch generiert, falls leer)
+		 - name: (string) Name des Feldes (Pflicht)
+		 - value: (string, optional) Wert des Feldes (Standard: "1")
+		 - checked: (bool, optional) Ob das Radio aktiviert ist
+		 - label: (mixed) Label-Text oder HTML-Inhalt (Pflicht)
+		 - class: (string, optional) Zusätzliche CSS-Klassen
+		 - errors: (string[], optional) Fehlernachrichten als Array
+		 - required: (bool, optional) Gibt an, ob das Feld ein Pflichtfeld ist (wird an das Label weitergereicht)
+		 - disabled: (bool, optional) Gibt an, ob das Radio deaktiviert ist (Standard: false)
+
+		 Beschreibung:
+		 Erzeugt ein Radio-Button mit Label im gewünschten Markup. Das Label kann auch HTML enthalten (z\.B\. Links). Das Argument hiddenValueField steuert, ob ein verstecktes Feld für den leeren Wert gerendert wird (wichtig für Formulare mit mehreren Radios). Das Argument required wird an das Label weitergegeben und kann für Barrierefreiheit genutzt werden. Das Argument disabled deaktiviert das Radio. Fehler werden unterhalb des Radios mit <co:form.error> angezeigt.
+
+		 Beispielhafte Aufrufe:
+		 <co:form.radio id="form-field--gender-m" name="gender" value="m" label="Männlich" checked="true" />
+		 <co:form.radio name="gender" value="w" label="Weiblich" />
+		 <co:form.radio name="newsletter" value="1" label="Newsletter abonnieren" hiddenValueField="false" disabled="true" errors="{0: 'Bitte auswählen!'}" />
+		-->
+	</f:comment>
+
+	<f:argument name="id" type="string" default="" />
+	<f:argument name="name" type="string" />
+	<f:argument name="label" type="string" />
+	<f:argument name="value" type="string" default="1" />
+	<f:argument name="checked" type="boolean" optional="{true}" />
+	<f:argument name="class" type="string" optional="{true}" />
+	<f:argument name="errors" type="string[]" optional="{true}" />
+	<f:argument name="disabled" type="boolean" optional="{true}" />
+	<f:argument name="required" type="boolean" optional="{true}" />
+
+	<f:if condition="{id} == ''">
+		<f:variable name="id">form-field--{fo:randomId()}</f:variable>
+	</f:if>
+
+	<co:cssClassCollect name="class" value="form-field form-field--radio" />
+	<co:cssClassCollect name="class" value="form-field--error" condition="{errors}" />
+
+	<div class="form-item form-item--choice form-item--radio">
+		<input type="hidden" name="{name}" value="" />
+		<input
+			type="radio"
+			id="{id}"
+			name="{name}"
+			class="{class}"
+			value="{value}"
+			checked="{f:if(condition: '{checked}', then: 'checked')}"
+			disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+			required="{f:if(condition: '{required}', then: 'required')}" />
+
+		<co:form.label id="{id}" label="{label}" required="{required}" />
+		<co:form.error errors="{errors}" />
+	</div>
+</html>
