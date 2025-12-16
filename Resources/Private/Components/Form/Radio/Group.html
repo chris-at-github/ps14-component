@@ -16,6 +16,7 @@
 		 - errors: (string[], optional) Fehler-Meldungen für das Feld
 		 - disabled: (boolean, optional) Feld deaktivieren
 		 - required: (boolean, optional) Feld als Pflichtfeld markieren
+		 - variant: (string, optional) Steuert die optische Variante der Gruppe, z\.B\. "horizontal" für nebeneinander angeordnete Optionen
 
 		 Beispielhafte Aufrufe:
 		 <co:form.radio.group
@@ -32,6 +33,7 @@
 			 errors="{
 				 0: 'Bitte wähle mindestens eine Mitgliedschaft aus.'
 			 }"
+			 variant="horizontal"
 		 />
 		-->
 	</f:comment>
@@ -45,15 +47,23 @@
 	<f:argument name="errors" type="string[]" optional="{true}" />
 	<f:argument name="disabled" type="boolean" optional="{true}" />
 	<f:argument name="required" type="boolean" optional="{true}" />
+	<f:argument name="variant" type="string" optional="{true}" />
 
 	<f:if condition="{id} == ''">
 		<f:variable name="id">form-field--{fo:randomId()}</f:variable>
 	</f:if>
 
+	<co:cssClassCollect name="groupClass" value="form-item-group" />
+	<co:cssClassCollect name="groupClass" value="form-item-group--{variant}" condition="{variant}" />
+	<co:cssClassCollect name="groupClass" value="form-item-group--disabled" condition="{disabled}" />
+
+	<co:cssClassCollect name="choicesClass" value="form-item-group__choices" />
+	<co:cssClassCollect name="choicesClass" value="form-item-group__choices--{variant}" condition="{variant}" />
+
 	<co:cssClassCollect name="fieldClass" value="form-field form-field--radio" />
 	<co:cssClassCollect name="fieldClass" value="form-field--error" condition="{errors}" />
 
-	<fieldset class="form-item-group">
+	<fieldset class="{groupClass}">
 		<legend class="form-label form-item-group__label">{label}
 			<f:if condition="{required}">
 				<span class="form-label__required"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:label.required" /></span>
@@ -62,7 +72,7 @@
 
 		<co:form.description class="form-item-group__description" description="{description}" />
 
-		<div class="form-item-group__choices">
+		<div class="{choicesClass}">
 			<f:if condition="{disabled} == false">
 				<input type="hidden" name="{name}" value="" />
 			</f:if>
