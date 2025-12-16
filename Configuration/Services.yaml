@@ -6,3 +6,4 @@ services:
 
   Ps14\Component\:
     resource: '../Classes/*'
+
