@@ -1,0 +1,98 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+			xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+	<f:comment>
+		<!--
+		 Group-Partial für Radio-Optionen.
+
+		 Parameter:
+		 - id: (string, optional) Basis-ID für die Radio-Inputs
+		 - name: (string) Name des Feldes
+		 - label: (string) Gruppen-Label
+		 - description: (string, optional) Beschreibung
+		 - options: (array) Array mit {value, label, checked (optional)}
+		 - values: (array) Aktuelle Werte (mehrere möglich)
+		 - errors: (string[], optional) Fehler-Meldungen für das Feld
+		 - disabled: (boolean, optional) Feld deaktivieren
+		 - required: (boolean, optional) Feld als Pflichtfeld markieren
+		 - variant: (string, optional) Steuert die optische Variante der Gruppe, z\.B\. "horizontal" für nebeneinander angeordnete Optionen
+
+		 Beispielhafte Aufrufe:
+		 <co:form.checkbox.group
+			name="interests"
+			label="Interessen wählen"
+			description="Mehrfachauswahl möglich."
+			options="{
+			 0: {value: 'sport', label: 'Sport'},
+			 1: {value: 'musik', label: 'Musik'},
+			 2: {value: 'kunst', label: 'Kunst'}
+			}"
+			values="{0: 'musik', 1: 'kunst'}"
+			required="true"
+			errors="{
+			 0: 'Bitte wähle mindestens ein Interesse aus.'
+			}"
+			variant="horizontal"
+		 />
+		-->
+	</f:comment>
+
+	<f:argument name="id" type="string" default="" />
+	<f:argument name="name" type="string" />
+	<f:argument name="label" type="string" />
+	<f:argument name="description" type="string" optional="{true}" />
+	<f:argument name="options" type="array" />
+	<f:argument name="values" type="array" />
+	<f:argument name="errors" type="string[]" optional="{true}" />
+	<f:argument name="disabled" type="boolean" optional="{true}" />
+	<f:argument name="required" type="boolean" optional="{true}" />
+	<f:argument name="variant" type="string" optional="{true}" />
+
+	<f:if condition="{id} == ''">
+		<f:variable name="id">form-field--{fo:randomId()}</f:variable>
+	</f:if>
+
+	<co:cssClassCollect name="groupClass" value="form-item-group" />
+	<co:cssClassCollect name="groupClass" value="form-item-group--{variant}" condition="{variant}" />
+	<co:cssClassCollect name="groupClass" value="form-item-group--disabled" condition="{disabled}" />
+
+	<co:cssClassCollect name="choicesClass" value="form-item-group__choices" />
+	<co:cssClassCollect name="choicesClass" value="form-item-group__choices--{variant}" condition="{variant}" />
+
+	<co:cssClassCollect name="fieldClass" value="form-field form-field--checkbox" />
+	<co:cssClassCollect name="fieldClass" value="form-field--error" condition="{errors}" />
+
+	<fieldset class="{groupClass}">
+		<legend class="form-label form-item-group__label">{label}
+			<f:if condition="{required}">
+				<span class="form-label__required"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:label.required" /></span>
+			</f:if>
+		</legend>
+
+		<co:form.description class="form-item-group__description" description="{description}" />
+
+		<div class="{choicesClass}">
+			<f:if condition="{disabled} == false">
+				<input type="hidden" name="{name}" value="" />
+			</f:if>
+
+			<f:for each="{options}" as="option" iteration="iteration">
+				<div class="form-item form-item--choice form-item--checkbox">
+					<input
+						type="checkbox"
+						id="{id}-{iteration.index}"
+						name="{name}[]"
+						class="{fieldClass}"
+						value="{option.value}"
+						checked="{f:if(condition: '{values -> fo:iterable.contains(value: option.value)}', then: 'checked')}"
+						disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+						required="{f:if(condition: '{required} && {iteration.index} == 0', then: 'required')}" />
+					<co:form.label id="{id}-{iteration.index}" label="{option.label}" />
+				</div>
+			</f:for>
+		</div>
+
+		<co:form.error class="form-item-group__error" errors="{errors}" />
+	</fieldset>
+</html>
