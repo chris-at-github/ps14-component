@@ -7,7 +7,7 @@
         Dokumentation: Fluid-Komponente <co:form.textarea>
 
         Parameter:
-        - id: (string) ID des Feldes
+        - id: (string, optional) ID des Feldes
         - name: (string) Name des Feldes
         - value: (string) Wert des Feldes
         - label: (string) Label-Text
@@ -16,14 +16,15 @@
         - class: (string) Zusätzliche CSS-Klassen
         - errors: (array) Fehlernachrichten als Array
         - autocomplete: (string) Wert für das autocomplete-Attribut (optional)
+        - disabled: (bool, optional) true/false – deaktiviert das Feld und verhindert die Eingabe
 
         Beispielhafte Aufrufe:
-        <co:form.textarea id="form-field--desc" name="desc" label="Beschreibung" value="Test" />
+        <co:form.textarea id="form-field--desc" disabled="true" name="desc" label="Beschreibung" value="Test" />
         <co:form.textarea id="form-field--bio" name="bio" label="Biografie" required="true" description="Bitte geben Sie Ihre Biografie ein." value="" autocomplete="off" />
     -->
     </f:comment>
 
-    <f:argument name="id" type="string" default="" />
+    <f:argument name="id" type="string" optional="{true}" default="" />
     <f:argument name="name" type="string" />
     <f:argument name="label" type="string" />
     <f:argument name="value" type="string" optional="{true}" />
@@ -32,26 +33,32 @@
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="autocomplete" type="string" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
 
     <f:if condition="{id} == ''">
         <f:variable name="id">form-field--{fo:randomId()}</f:variable>
     </f:if>
 
-    <co:cssClassCollect name="class" value="form-field form-field--default form-field--textarea" />
-    <co:cssClassCollect name="class" value="form-field--error" condition="{errors}" />
+    <co:cssClassCollect name="itemClass" value="form-item" />
+    <co:cssClassCollect name="itemClass" value="form-item--disabled" condition="{disabled}" />
 
-    <div class="form-item">
+    <co:cssClassCollect name="fieldClass" value="{class}" condition="{class}" />
+    <co:cssClassCollect name="fieldClass" value="form-field form-field--default form-field--textarea" />
+    <co:cssClassCollect name="fieldClass" value="form-field--error" condition="{errors}" />
+
+    <div class="{itemClass}">
         <co:form.label id="{id}" label="{label}" required="{required}" />
         <co:form.description description="{description}" />
 
         <textarea
-          rows="5"
-          cols="40"
-          id="{id}"
-          name="{name}"
-          class="{class}"
-          {f:if(condition: required, then: 'required')}
-         autocomplete="{autocomplete}">{value}</textarea>
+            rows="5"
+            cols="40"
+            id="{id}"
+            name="{name}"
+            class="{fieldClass}"
+            disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+            required="{f:if(condition: '{required}', then: 'required')}"
+            autocomplete="{autocomplete}">{value}</textarea>
 
         <co:form.error errors="{errors}" />
     </div>

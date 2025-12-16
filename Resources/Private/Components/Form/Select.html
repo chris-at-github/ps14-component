@@ -26,7 +26,7 @@
         -->
     </f:comment>
 
-    <f:argument name="id" type="string" default="" />
+    <f:argument name="id" type="string" optional="{true}" default="" />
     <f:argument name="name" type="string" />
     <f:argument name="label" type="string" />
     <f:argument name="value" type="string" optional="{true}" />
@@ -35,25 +35,31 @@
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="options" type="array" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
 
     <f:if condition="{id} == ''">
         <f:variable name="id">form-field--{fo:randomId()}</f:variable>
     </f:if>
 
-    <co:cssClassCollect name="class" value="form-field form-field--default form-field--select" />
-    <co:cssClassCollect name="class" value="form-field--error" condition="{errors}" />
+    <co:cssClassCollect name="itemClass" value="form-item" />
+    <co:cssClassCollect name="itemClass" value="form-item--disabled" condition="{disabled}" />
 
-    <div class="form-item">
+    <co:cssClassCollect name="fieldClass" value="{class}" condition="{class}" />
+    <co:cssClassCollect name="fieldClass" value="form-field form-field--default form-field--select" />
+    <co:cssClassCollect name="fieldClass" value="form-field--error" condition="{errors}" />
+
+    <div class="{itemClass}">
         <co:form.label id="{id}" label="{label}" required="{required}" />
         <co:form.description description="{description}" />
 
         <select
           id="{id}"
           name="{name}"
-          class="{class}"
-          {f:if(condition: required, then: 'required')}>
+          class="{fieldClass}"
+          disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+          required="{f:if(condition: '{required}', then: 'required')}">
             <f:for each="{options}" as="option">
-                <option value="{option.value}" {f:if(condition: '{option.value} == {value}', then: 'selected="selected"')}>{option.label}</option>
+                <option value="{option.value}" selected="{f:if(condition: '{option.value} == {value}', then: 'selected')}">{option.label}</option>
             </f:for>
         </select>
 
