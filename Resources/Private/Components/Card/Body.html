@@ -1,0 +1,34 @@
+<html
+  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+  data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:card>
+
+        Namespace:
+        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+
+        Parameter für <co:card>:
+        - variant: (string) z.B. "default", "primary" – bestimmt die Card-Variante/Klasse
+        - id: (string) optionale ID für die Card
+        - class: (string) optionale zusätzliche CSS-Klassen für die Card
+        - url: (string) optionale URL, macht die Card klickbar (als Link)
+
+        Beispielhafte Aufrufe:
+        <co:card>Inhalt der Card</co:card>
+        <co:card variant="primary" class="my-card">Card mit Klasse</co:card>
+        <co:card url="/seite">Klickbare Card</co:card>
+    -->
+    </f:comment>
+
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+
+    <co:cssClassCollect name="class" value="card--{variant}" condition="{variant}" />
+
+    <div class="card__body {class}">
+        <f:slot />
+    </div>
+</html>
