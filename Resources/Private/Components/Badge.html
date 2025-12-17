@@ -1,0 +1,77 @@
+<html
+  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+  data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:badge>
+
+        Namespace:
+          xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+
+        Parameter für <co:badge>:
+        - variant: (string) z.B. "default", "primary" – bestimmt die Badge-Variante/Klasse
+        - class: (string) optionale zusätzliche CSS-Klassen für die Badge
+        - url: (string, optional) Link-URL, macht die Badge zu einem Link
+        - rendering: (string, optional) "button", "span" – steuert das Ausgabetag, Standard: "span" ("button" für Button, "span" für statisch)
+        - disabled: (bool, optional) true/false – deaktiviert den Button
+        - prefixIcon: (string, optional) Pfad zu einem Icon, das vor dem Badge-Text angezeigt wird
+        - suffixIcon: (string, optional) Pfad zu einem Icon, das nach dem Badge-Text angezeigt wird
+
+        Beispielhafte Aufrufe:
+        <co:badge variant="default">Badge</co:badge>
+        <co:badge variant="default" rendering="button">Badge (Button)</co:badge>
+        <co:badge variant="default" url="#">Badge (Link)</co:badge>
+        <co:badge variant="default" rendering="button" disabled="true">Badge (Disabled)</co:badge>
+        <co:badge variant="default" rendering="button" prefixIcon="/fileadmin/icons/x.svg">Close</co:badge>
+        <co:badge variant="default" rendering="button" prefixIcon="/fileadmin/icons/x.svg" suffixIcon="/fileadmin/icons/check.svg">Close</co:badge>
+    -->
+    </f:comment>
+
+    <f:argument name="variant" type="string" optional="{true}" default="default" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="url" type="string" optional="{true}" />
+    <f:argument name="rendering" type="string" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="prefixIcon" type="string" optional="{true}" />
+    <f:argument name="suffixIcon" type="string" optional="{true}" />
+
+    <co:cssClassCollect name="class" value="badge" />
+    <co:cssClassCollect name="class" value="badge--{variant}" condition="{variant}" />
+    <co:cssClassCollect name="class" value="badge--interactive" condition="{rendering} == 'button' || {url}" />
+    <co:cssClassCollect name="class" value="badge--icon-prefix" condition="{prefixIcon}" />
+    <co:cssClassCollect name="class" value="badge--icon-suffix" condition="{suffixIcon}" />
+
+    <f:section name="Content">
+        <f:if condition="{prefixIcon}">
+            <fo:svg.inline source="{prefixIcon}" class="badge__icon"/>
+        </f:if>
+        <f:slot/>
+        <f:if condition="{suffixIcon}">
+            <fo:svg.inline source="{suffixIcon}" class="badge__icon"/>
+        </f:if>
+    </f:section>
+
+    <f:if condition="{url}">
+        <f:then>
+            <a href="{url}" class="{class}">
+                <f:render section="Content" arguments="{_all}" />
+            </a>
+        </f:then>
+        <f:else>
+            <f:if condition="{rendering} == 'button'">
+                <f:then>
+                    <button class="{class}" disabled="{f:if(condition: disabled, then: 'disabled')}">
+                        <f:render section="Content" arguments="{_all}" />
+                    </button>
+                </f:then>
+                <f:else>
+                    <span class="{class}">
+                        <f:render section="Content" arguments="{_all}" />
+                    </span>
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+</html>
