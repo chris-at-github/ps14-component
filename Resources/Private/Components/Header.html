@@ -1,0 +1,100 @@
+<html
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+	xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+	data-namespace-typo3-fluid="true">
+    <f:comment>
+      <!--
+          Dokumentation: Fluid-Komponente <co:header>
+
+          Namespace:
+          xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+
+          Parameter für <co:header>:
+          - layout: (int, optional, Standard: 0) 0 = <div>, 1-6 = <h1>-<h6>
+          - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
+          - class: (string, optional) Zusätzliche CSS-Klassen für das Header-Element
+          - id: (string, optional) ID für das Header-Element
+          - url: (string, optional) Wenn gesetzt, wird der Inhalt als Link ausgegeben
+
+          Beispielhafte Aufrufe:
+          <co:header>Überschrift als Div</co:header>
+          <co:header layout="2">Überschrift als H2</co:header>
+          <co:header layout="1" url="/seite">Verlinkte H1-Überschrift</co:header>
+          <co:header layout="3" variant="primary" class="my-header">H3 mit Klasse</co:header>
+      -->
+    </f:comment>
+
+    <f:argument name="layout" type="int" optional="{true}" default="0" />
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="id" type="string" optional="{true}" />
+    <f:argument name="url" type="string" optional="{true}" />
+
+    <co:cssClassCollect name="class" value="header" />
+    <co:cssClassCollect name="class" value="header--{variant}" condition="{variant}" />
+    <co:cssClassCollect name="class" value="header--layout-{layout}" condition="{layout}" />
+
+    <f:switch expression="{layout}">
+      <f:case value="1">
+        <h1 id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </h1>
+      </f:case>
+      <f:case value="2">
+        <h2 id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </h2>
+      </f:case>
+      <f:case value="3">
+        <h3 id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </h3>
+      </f:case>
+      <f:case value="4">
+        <h4 id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </h4>
+      </f:case>
+      <f:case value="5">
+        <h5 id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </h5>
+      </f:case>
+      <f:case value="6">
+        <h6 id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </h6>
+      </f:case>
+      <f:defaultCase>
+        <div id="{id}" class="{class}">
+          <f:render section="Inner" arguments="{url: url}">
+            <f:slot/>
+          </f:render>
+        </div>
+      </f:defaultCase>
+    </f:switch>
+
+    <f:section name="Inner">
+      <f:if condition="{url}">
+        <f:then>
+					<a class="header__link" href="{url}"><f:slot/></a>
+        </f:then>
+        <f:else>
+					<f:slot/>
+        </f:else>
+      </f:if>
+    </f:section>
+</html>
