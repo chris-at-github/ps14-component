@@ -1,0 +1,36 @@
+<html
+  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+  data-namespace-typo3-fluid="true">
+  <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:card.body>
+
+        Namespace:
+        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+
+        Parameter für <co:card.body>:
+        - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse der Card-Body
+        - class: (string, optional) Zusätzliche CSS-Klassen für das Card-Body-Element
+
+        Beispielhafte Aufrufe:
+        <co:card.body>Inhalt des Card-Bodys</co:card.body>
+        <co:card.body variant="primary" class="my-card-body">Card Body mit Klasse</co:card.body>
+    -->
+  </f:comment>
+
+  <f:argument name="variant" type="string" optional="{true}" />
+  <f:argument name="class" type="string" optional="{true}" />
+  <f:argument name="content" type="string" optional="{true}" />
+  <f:variable name="slotContent"><f:slot /></f:variable>
+
+  <co:cssClassCollect name="class" value="richtext--{variant}" condition="{variant}" />
+
+  <f:if condition="{content} || {slotContent}">
+    <div class="richtext {class}">
+      <f:if condition="{content}"><f:format.html>{content}</f:format.html></f:if>
+      <f:if condition="{slotContent}"><f:format.html>{slotContent}</f:format.html></f:if>
+    </div>
+  </f:if>
+</html>
