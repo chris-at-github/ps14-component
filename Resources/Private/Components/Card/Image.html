@@ -1,0 +1,48 @@
+<html
+  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+  data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:card.image>
+
+        Namespace:
+        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+
+        Parameter für <co:card.image>:
+        - image: (object, optional) Bild-Objekt, das ausgegeben werden soll
+        - icon: (string|TYPO3\CMS\Core\Resource\FileReference, optional) Pfad zu einer SVG/Icon-Datei oder FileReference
+        - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
+        - class: (string, optional) Zusätzliche CSS-Klassen für das Bild-Element
+
+        Beispielhafte Aufrufe:
+        <co:card.image image="{image}" />
+        <co:card.image icon="EXT:site/Resources/Public/Icons/sample.svg" />
+        <co:card.image icon="{iconFileReference}" />
+        <co:card.image image="{image}" variant="primary" class="my-image" />
+    -->
+    </f:comment>
+
+    <f:argument name="image" type="object" optional="{true}" />
+    <f:argument name="icon" type="mixed" optional="{true}" />
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" default="" />
+
+    <co:cssClassCollect name="class" value="card__image image-container" />
+    <co:cssClassCollect name="class" value="image-container--picture" condition="{image}" />
+    <co:cssClassCollect name="class" value="image-container--icon" condition="{icon}" />
+    <co:cssClassCollect name="class" value="card__image--{variant}" condition="{variant}" />
+
+    <f:if condition="{image}">
+         <div class="{class}">
+            <fo:media.responsive image="{image}" class="image-container__source" containerWidth="540" priority="true" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
+         </div>
+    </f:if>
+
+    <f:if condition="{icon}">
+      <div class="{class}">
+        <fo:svg.inline source="{icon}" class="image-container__source" />
+      </div>
+    </f:if>
+</html>
