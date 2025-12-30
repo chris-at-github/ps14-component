@@ -51,26 +51,30 @@
     <co:cssClass value="card--{variant}" condition="{variant}" />
     <co:cssClass value="card--interactive" condition="{url}" />
 
+    <f:section name="Main">
+      <f:slot/>
+      <f:if condition="{image}">
+        {image -> f:format.raw()}
+      </f:if>
+
+      <f:if condition="{body}">
+        <div class="card__body">{body -> f:format.raw()}</div>
+      </f:if>
+
+      <f:if condition="{actions}">
+        <div class="card__actions">{actions -> f:format.raw()}</div>
+      </f:if>
+    </f:section>
+
     <f:if condition="{url}">
       <f:then>
         <a href="{url}" id="{id}" class="card {class}">
-          <f:slot/>
+          <f:render section="Main" arguments="{_all}" />
         </a>
       </f:then>
       <f:else>
         <div class="card {class}">
-          <f:slot/>
-          <f:if condition="{image}">
-            {image -> f:format.raw()}
-          </f:if>
-
-          <f:if condition="{body}">
-            <div class="card__body">{body -> f:format.raw()}</div>
-          </f:if>
-
-          <f:if condition="{actions}">
-            <div class="card__actions">{actions -> f:format.raw()}</div>
-          </f:if>
+          <f:render section="Main" arguments="{_all}" />
         </div>
       </f:else>
     </f:if>
