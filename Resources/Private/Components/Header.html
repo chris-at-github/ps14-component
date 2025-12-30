@@ -31,9 +31,9 @@
     <f:argument name="id" type="string" optional="{true}" />
     <f:argument name="url" type="string" optional="{true}" />
 
-    <co:cssClassCollect name="class" value="header" />
-    <co:cssClassCollect name="class" value="header--{variant}" condition="{variant}" />
-    <co:cssClassCollect name="class" value="header--layout-{layout}" condition="{layout}" />
+    <co:cssClass value="header" />
+    <co:cssClass value="header--{variant}" condition="{variant}" />
+    <co:cssClass value="header--layout-{layout}" condition="{layout}" />
 
     <f:switch expression="{layout}">
       <f:case value="1">

@@ -53,15 +53,15 @@
 		<f:variable name="id">form-field--{fo:randomId()}</f:variable>
 	</f:if>
 
-	<co:cssClassCollect name="groupClass" value="form-item-group" />
-	<co:cssClassCollect name="groupClass" value="form-item-group--{variant}" condition="{variant}" />
-	<co:cssClassCollect name="groupClass" value="form-item-group--disabled" condition="{disabled}" />
+	<co:cssClass name="groupClass" value="form-item-group" />
+	<co:cssClass name="groupClass" value="form-item-group--{variant}" condition="{variant}" />
+	<co:cssClass name="groupClass" value="form-item-group--disabled" condition="{disabled}" />
 
-	<co:cssClassCollect name="choicesClass" value="form-item-group__choices" />
-	<co:cssClassCollect name="choicesClass" value="form-item-group__choices--{variant}" condition="{variant}" />
+	<co:cssClass name="choicesClass" value="form-item-group__choices" />
+	<co:cssClass name="choicesClass" value="form-item-group__choices--{variant}" condition="{variant}" />
 
-	<co:cssClassCollect name="fieldClass" value="form-field form-field--radio" />
-	<co:cssClassCollect name="fieldClass" value="form-field--error" condition="{errors}" />
+	<co:cssClass name="fieldClass" value="form-field form-field--radio" />
+	<co:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
 
 	<fieldset class="{groupClass}">
 		<legend class="form-label form-item-group__label">{label}

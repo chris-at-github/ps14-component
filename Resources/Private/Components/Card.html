@@ -32,8 +32,8 @@
     <f:variable name="body"><f:slot name="body" /></f:variable>
     <f:variable name="actions"><f:slot name="actions" /></f:variable>
 
-    <co:cssClassCollect name="class" value="card--{variant}" condition="{variant}" />
-    <co:cssClassCollect name="class" value="card--interactive" condition="{url}" />
+    <co:cssClass value="card--{variant}" condition="{variant}" />
+    <co:cssClass value="card--interactive" condition="{url}" />
 
     <f:if condition="{url}">
       <f:then>

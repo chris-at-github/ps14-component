@@ -23,7 +23,7 @@
     <f:argument name="id" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
 
-    <co:cssClassCollect name="class" value="form-error" />
+    <co:cssClass value="form-error" />
 
     <f:if condition="{errors}">
         <f:if condition="{errors -> f:count()} == 1">

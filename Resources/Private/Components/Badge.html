@@ -37,11 +37,11 @@
     <f:argument name="prefixIcon" type="string" optional="{true}" />
     <f:argument name="suffixIcon" type="string" optional="{true}" />
 
-    <co:cssClassCollect name="class" value="badge" />
-    <co:cssClassCollect name="class" value="badge--{variant}" condition="{variant}" />
-    <co:cssClassCollect name="class" value="badge--interactive" condition="{rendering} == 'button' || {url}" />
-    <co:cssClassCollect name="class" value="badge--icon-prefix" condition="{prefixIcon}" />
-    <co:cssClassCollect name="class" value="badge--icon-suffix" condition="{suffixIcon}" />
+    <co:cssClass value="badge" />
+    <co:cssClass value="badge--{variant}" condition="{variant}" />
+    <co:cssClass value="badge--interactive" condition="{rendering} == 'button' || {url}" />
+    <co:cssClass value="badge--icon-prefix" condition="{prefixIcon}" />
+    <co:cssClass value="badge--icon-suffix" condition="{suffixIcon}" />
 
     <f:section name="Content">
         <f:if condition="{prefixIcon}">

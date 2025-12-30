@@ -27,16 +27,18 @@
     <f:argument name="image" type="object" optional="{true}" />
     <f:argument name="icon" type="mixed" optional="{true}" />
     <f:argument name="variant" type="string" optional="{true}" />
-    <f:argument name="class" type="string" optional="{true}" default="" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="ratio" type="string" optional="{true}" />
 
-    <co:cssClassCollect name="class" value="card__image image-container" />
-    <co:cssClassCollect name="class" value="image-container--picture" condition="{image}" />
-    <co:cssClassCollect name="class" value="image-container--icon" condition="{icon}" />
-    <co:cssClassCollect name="class" value="card__image--{variant}" condition="{variant}" />
+    <co:cssClass value="card__image image-container" />
+    <co:cssClass value="image-container--picture" condition="{image}" />
+    <co:cssClass value="image-container--icon" condition="{icon}" />
+    <co:cssClass value="image-container--ratio image-container--ratio-{ratio}" condition="{ratio}" />
+    <co:cssClass value="card__image--{variant}" condition="{variant}" />
 
     <f:if condition="{image}">
       <div class="{class}">
-        <fo:media.responsive image="{image}" class="image-container__source" containerWidth="540" priority="true" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
+        <fo:media.responsive image="{image}" class="image-container__source" containerWidth="540" priority="false" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
       </div>
     </f:if>
 

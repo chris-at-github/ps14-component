@@ -4,11 +4,11 @@ namespace Ps14\Component\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
-class CssClassCollectViewHelper extends AbstractViewHelper
+class CssClassViewHelper extends AbstractViewHelper
 {
     public function initializeArguments()
     {
-        $this->registerArgument('name', 'string', 'Name der Variable für die CSS-Klassen', true);
+        $this->registerArgument('name', 'string', 'Name der Variable für die CSS-Klassen', false, 'class');
         $this->registerArgument('value', 'string', 'CSS-Klasse, die hinzugefügt werden soll', true);
         $this->registerArgument('condition', 'bool', 'Optional: Bedingung, ob die Klasse hinzugefügt wird', false, true);
     }

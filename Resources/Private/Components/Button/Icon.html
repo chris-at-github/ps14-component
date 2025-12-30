@@ -6,7 +6,7 @@
     <f:argument name="label" type="string" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
 
-    <co:cssClassCollect name="class" value="button--{variant}" condition="{variant}" />
+    <co:cssClass value="button--{variant}" condition="{variant}" />
 
     <button id="{id}" class="button button--icon {class}" {f:if(condition: disabled, then: 'disabled="disabled"')} aria-label="{label}">
         <fo:svg.inline source="{icon}" class="button__icon" />

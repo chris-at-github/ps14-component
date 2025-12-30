@@ -33,9 +33,9 @@
     <f:argument name="suffixIcon" type="string" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
 
-    <co:cssClassCollect name="class" value="button--{variant}" condition="{variant}" />
-    <co:cssClassCollect name="class" value="button--icon-prefix" condition="{prefixIcon}" />
-    <co:cssClassCollect name="class" value="button--icon-suffix" condition="{suffixIcon}" />
+    <co:cssClass value="button--{variant}" condition="{variant}" />
+    <co:cssClass value="button--icon-prefix" condition="{prefixIcon}" />
+    <co:cssClass value="button--icon-suffix" condition="{suffixIcon}" />
 
     <button id="{id}" class="button {class}" {f:if(condition: disabled, then: 'disabled="disabled"')}>
         <f:if condition="{prefixIcon}"><fo:svg.inline source="{prefixIcon}" class="button__icon" /></f:if>

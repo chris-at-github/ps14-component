@@ -42,8 +42,8 @@
         <f:variable name="id">form-field--{fo:randomId()}</f:variable>
     </f:if>
 
-    <co:cssClassCollect name="class" value="form-field form-field--checkbox" />
-    <co:cssClassCollect name="class" value="form-field--error" condition="{errors}" />
+    <co:cssClass value="form-field form-field--checkbox" />
+    <co:cssClass value="form-field--error" condition="{errors}" />
 
     <div class="form-item form-item--choice form-item--checkbox">
         <f:if condition="{hiddenValueField}">

@@ -47,12 +47,12 @@
         <f:variable name="autocomplete">off</f:variable>
     </f:if>
 
-    <co:cssClassCollect name="itemClass" value="form-item" />
-    <co:cssClassCollect name="itemClass" value="form-item--disabled" condition="{disabled}" />
+    <co:cssClass name="itemClass" value="form-item" />
+    <co:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
 
-    <co:cssClassCollect name="fieldClass" value="{class}" condition="{class}" />
-    <co:cssClassCollect name="fieldClass" value="form-field form-field--default form-field--{type}" />
-    <co:cssClassCollect name="fieldClass" value="form-field--error" condition="{errors}" />
+    <co:cssClass name="fieldClass" value="{class}" condition="{class}" />
+    <co:cssClass name="fieldClass" value="form-field form-field--default form-field--{type}" />
+    <co:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
 
     <div class="{itemClass}">
         <co:form.label id="{id}" label="{label}" required="{required}" />

@@ -25,7 +25,7 @@
   <f:argument name="content" type="string" optional="{true}" />
   <f:variable name="slotContent"><f:slot /></f:variable>
 
-  <co:cssClassCollect name="class" value="richtext--{variant}" condition="{variant}" />
+  <co:cssClass value="richtext--{variant}" condition="{variant}" />
 
   <f:if condition="{content} || {slotContent}">
     <div class="richtext {class}">
