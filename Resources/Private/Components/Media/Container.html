@@ -27,27 +27,32 @@
     -->
     </f:comment>
 
-    <f:argument name="image" type="object" optional="{true}" />
-    <f:argument name="icon" type="mixed" optional="{true}" />
+    <f:argument name="media" type="object" />
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="ratio" type="string" optional="{true}" />
+    <f:argument name="priority" type="boolean" optional="{true}" default="{false}" />
+    <f:argument name="containerWidth" type="int" optional="{true}" default="810" />
+    <f:argument name="sizes" type="array" optional="{true}" />
 
-    <co:cssClass value="card__image media-container" />
-    <co:cssClass value="media-container--picture" condition="{image}" />
-    <co:cssClass value="media-container--icon" condition="{icon}" />
+    <co:cssClass value="media-container media-container--picture" />
     <co:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
-    <co:cssClass value="card__image--{variant}" condition="{variant}" />
+    <co:cssClass value="media-container--{variant}" condition="{variant}" />
 
-    <f:if condition="{image}">
+    <f:if condition="{media}">
       <div class="{class}">
-        <div class="media-container__ratio"><fo:media.responsive image="{image}" class="media-container__source" containerWidth="540" priority="false" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" /></div>
-      </div>
-    </f:if>
+        <div class="media-container__ratio"><fo:media.responsive image="{media}" class="media-container__source" containerWidth="{containerWidth}" priority="{priority}" sizes="{sizes}" /></div>
 
-    <f:if condition="{icon}">
-      <div class="{class}">
-        <div class="media-container__ratio"><fo:svg.inline source="{icon}" class="media-container__source" /></div>
+        <f:if condition="{media.description}">
+          <div class="media-description media-container__description">{media.description -> f:format.nl2br()}</div>
+        </f:if>
+
+        <f:if condition="{media.properties.copyright} || {media.properties.source}">
+          <div class="media-copyright media-container__copyright">
+            <f:if condition="{media.properties.copyright}"><span class="media-copyright__value">Abbildung: {media.properties.copyright}</span></f:if>
+            <f:if condition="{media.properties.source}"><span class="media-copyright__value">Quelle: {media.properties.source}</span></f:if>
+          </div>
+        </f:if>
       </div>
     </f:if>
 </html>
