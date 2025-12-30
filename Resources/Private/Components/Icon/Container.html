@@ -1,0 +1,47 @@
+<html
+  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+  data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:icon.container>
+
+        Namespace:
+        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+
+        Argumente für <co:icon.container>:
+        - icon: (string|TYPO3\CMS\Core\Resource\FileReference, erforderlich) SVG-Pfad oder FileReference für das Icon
+        - variant: (string, optional) z.B. "default", "primary", "neutral" – erweitert die CSS-Klasse
+        - class: (string, optional) Zusätzliche CSS-Klassen für das Container-Element
+        - ratio: (string, optional) Seitenverhältnis, z.B. "1-1", "4-3"
+        - label: (string, optional) ARIA-Label für Barrierefreiheit
+
+        Funktion:
+        Gibt ein Icon in einem flexiblen Container mit optionalem Seitenverhältnis und ARIA-Label aus. Das Icon kann als
+        SVG-Pfad oder als TYPO3 FileReference übergeben werden.
+
+        Beispielhafte Aufrufe:
+        <co:icon.container icon="EXT:site/Resources/Public/Icons/sample.svg" />
+        <co:icon.container icon="{iconFileReference}" ratio="1-1" />
+        <co:icon.container icon="{iconFileReference}" variant="neutral" label="Schließen" />
+        <co:icon.container icon="{iconFileReference}" class="my-icon" />
+    -->
+    </f:comment>
+
+    <f:argument name="icon" type="mixed" optional="{true}" />
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="ratio" type="string" optional="{true}" />
+    <f:argument name="label" type="string" optional="{true}" />
+
+    <co:cssClass value="icon-container" />
+    <co:cssClass value="icon-container--ratio icon-container--ratio-{ratio}" condition="{ratio}" />
+    <co:cssClass value="icon-container--{variant}" condition="{variant}" />
+
+    <f:if condition="{icon}">
+      <div class="{class}" aria-label="{label}">
+        <fo:svg.inline source="{icon}" class="icon-container__source" />
+      </div>
+    </f:if>
+</html>
