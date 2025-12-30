@@ -50,7 +50,7 @@
 
     <f:if condition="{media}">
       <div class="{class}">
-        <div class="media-container__ratio"><fo:media.responsive image="{media}" class="media-container__source" containerWidth="{containerWidth}" priority="{priority}" sizes="{sizes}" /></div>
+        <fo:media.responsive image="{media}" class="media-container__source" containerWidth="{containerWidth}" priority="{priority}" sizes="{sizes}" />
 
         <f:if condition="{media.description} && {description}">
           <div class="media-description media-container__description">{media.description -> f:format.nl2br()}</div>

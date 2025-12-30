@@ -33,21 +33,24 @@
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="ratio" type="string" optional="{true}" />
 
-    <co:cssClass value="card__image media-container" />
-    <co:cssClass value="media-container--picture" condition="{image}" />
-    <co:cssClass value="media-container--icon" condition="{icon}" />
-    <co:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
-    <co:cssClass value="card__image--{variant}" condition="{variant}" />
-
     <f:if condition="{image}">
+      <co:cssClass value="card__image card__image--picture" />
+      <co:cssClass value="card__image--{variant}" condition="{variant}" />
+      <co:cssClass value="media-container media-container--picture" />
+      <co:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
+
       <div class="{class}">
-        <div class="media-container__ratio"><fo:media.responsive image="{image}" class="media-container__source" containerWidth="540" priority="false" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" /></div>
+        <fo:media.responsive image="{image}" class="media-container__source" containerWidth="540" priority="false" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
       </div>
     </f:if>
 
     <f:if condition="{icon}">
+      <co:cssClass value="card__image card__image--icon icon-container" />
+      <co:cssClass value="card__image--{variant}" condition="{variant}" />
+      <co:cssClass value="icon-container--ratio icon-container--ratio-{ratio}" condition="{ratio}" />
+
       <div class="{class}">
-        <div class="media-container__ratio"><fo:svg.inline source="{icon}" class="media-container__source" /></div>
+        <fo:svg.inline source="{icon}" class="icon-container__source" />
       </div>
     </f:if>
 </html>
