@@ -35,9 +35,9 @@
     <co:cssClassCollect name="class" value="card__image--{variant}" condition="{variant}" />
 
     <f:if condition="{image}">
-         <div class="{class}">
-            <fo:media.responsive image="{image}" class="image-container__source" containerWidth="540" priority="true" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
-         </div>
+      <div class="{class}">
+        <fo:media.responsive image="{image}" class="image-container__source" containerWidth="540" priority="true" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
+      </div>
     </f:if>
 
     <f:if condition="{icon}">

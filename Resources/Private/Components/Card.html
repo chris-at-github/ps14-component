@@ -28,19 +28,34 @@
     <f:argument name="id" type="string" optional="{true}" />
     <f:argument name="url" type="string" optional="{true}" />
 
+    <f:variable name="image"><f:slot name="image" /></f:variable>
+    <f:variable name="body"><f:slot name="body" /></f:variable>
+    <f:variable name="actions"><f:slot name="actions" /></f:variable>
+
     <co:cssClassCollect name="class" value="card--{variant}" condition="{variant}" />
     <co:cssClassCollect name="class" value="card--interactive" condition="{url}" />
 
     <f:if condition="{url}">
-        <f:then>
-            <a href="{url}" id="{id}" class="card {class}">
-                <f:slot />
-            </a>
-        </f:then>
-        <f:else>
-            <div class="card {class}">
-                <f:slot />
-            </div>
-        </f:else>
+      <f:then>
+        <a href="{url}" id="{id}" class="card {class}">
+          <f:slot/>
+        </a>
+      </f:then>
+      <f:else>
+        <div class="card {class}">
+          <f:slot/>
+          <f:if condition="{image}">
+            {image -> f:format.raw()}
+          </f:if>
+
+          <f:if condition="{body}">
+            <div class="card__body">{body -> f:format.raw()}</div>
+          </f:if>
+
+          <f:if condition="{actions}">
+            <div class="card__actions">{actions -> f:format.raw()}</div>
+          </f:if>
+        </div>
+      </f:else>
     </f:if>
 </html>
