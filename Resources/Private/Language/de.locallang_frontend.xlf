@@ -6,6 +6,12 @@
 			<trans-unit id="label.required">
 				<target>(erforderlich)</target>
 			</trans-unit>
+			<trans-unit id="media.source">
+				<target>Quelle:</target>
+			</trans-unit>
+			<trans-unit id="media.copyright">
+				<target>Abbildung:</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

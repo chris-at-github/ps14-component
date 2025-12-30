@@ -49,8 +49,8 @@
 
         <f:if condition="{media.properties.copyright} || {media.properties.source}">
           <div class="media-copyright media-container__copyright">
-            <f:if condition="{media.properties.copyright}"><span class="media-copyright__value">Abbildung: {media.properties.copyright}</span></f:if>
-            <f:if condition="{media.properties.source}"><span class="media-copyright__value">Quelle: {media.properties.source}</span></f:if>
+            <f:if condition="{media.properties.copyright}"><span class="media-copyright__value"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:media.copyright" /> {media.properties.copyright}</span></f:if>
+            <f:if condition="{media.properties.source}"><span class="media-copyright__value"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:media.source" /> {media.properties.source}</span></f:if>
           </div>
         </f:if>
       </div>
