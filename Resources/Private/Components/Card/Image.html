@@ -15,12 +15,15 @@
         - icon: (string|TYPO3\CMS\Core\Resource\FileReference, optional) Pfad zu einer SVG/Icon-Datei oder FileReference
         - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
         - class: (string, optional) Zusätzliche CSS-Klassen für das Bild-Element
+        - ratio: (string, optional) Seitenverhältnis, z.B. "16-9", "1-1"
 
         Beispielhafte Aufrufe:
         <co:card.image image="{image}" />
         <co:card.image icon="EXT:site/Resources/Public/Icons/sample.svg" />
         <co:card.image icon="{iconFileReference}" />
         <co:card.image image="{image}" variant="primary" class="my-image" />
+        <co:card.image image="{image}" ratio="16-9" />
+        <co:card.image icon="{iconFileReference}" ratio="1-1" />
     -->
     </f:comment>
 

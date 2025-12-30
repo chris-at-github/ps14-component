@@ -11,13 +11,29 @@
         xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
 
         Parameter für <co:card>:
-        - variant: (string) z.B. "default", "primary" – bestimmt die Card-Variante/Klasse
-        - id: (string) optionale ID für die Card
-        - class: (string) optionale zusätzliche CSS-Klassen für die Card
-        - url: (string) optionale URL, macht die Card klickbar (als Link)
+        - variant: (string, optional) z.B. "default", "primary" – bestimmt die Card-Variante/Klasse
+        - id: (string, optional) Optionale ID für die Card
+        - class: (string, optional) Zusätzliche CSS-Klassen für die Card
+        - url: (string, optional) Wenn gesetzt, wird die Card als Link ausgegeben
+
+        Slots:
+        - image: (optional) Bild- oder Icon-Komponente, z.B. <co:card.image />
+        - body: (optional) Inhalt der Card, z.B. <co:header />, <co:richtext />
+        - actions: (optional) Aktions-Buttons, z.B. <co:button />
 
         Beispielhafte Aufrufe:
-        <co:card>Inhalt der Card</co:card>
+        <co:card>
+            <f:fragment name="image">
+                <co:card.image image="{image}" />
+            </f:fragment>
+            <f:fragment name="body">
+                <co:header>Card Titel</co:header>
+                <co:richtext content="{description}" />
+            </f:fragment>
+            <f:fragment name="actions">
+                <co:button>Details</co:button>
+            </f:fragment>
+        </co:card>
         <co:card variant="primary" class="my-card">Card mit Klasse</co:card>
         <co:card url="/seite">Klickbare Card</co:card>
     -->
