@@ -10,11 +10,12 @@
         Namespace:
         xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
 
-        Parameter für <co:card>:
+        Argumente für <co:card>:
         - variant: (string, optional) z.B. "default", "primary" – bestimmt die Card-Variante/Klasse
         - id: (string, optional) Optionale ID für die Card
         - class: (string, optional) Zusätzliche CSS-Klassen für die Card
         - url: (string, optional) Wenn gesetzt, wird die Card als Link ausgegeben
+        - layout: (string, optional) Layout-Variante, z.B. "horizontal-im-bo-ac"
 
         Slots:
         - image: (optional) Bild- oder Icon-Komponente, z.B. <co:card.image />
@@ -36,6 +37,7 @@
         </co:card>
         <co:card variant="primary" class="my-card">Card mit Klasse</co:card>
         <co:card url="/seite">Klickbare Card</co:card>
+        <co:card layout="horizontal-im-bo-ac">Card mit Layout-Variante</co:card>
     -->
     </f:comment>
 
@@ -43,6 +45,7 @@
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="id" type="string" optional="{true}" />
     <f:argument name="url" type="string" optional="{true}" />
+    <f:argument name="layout" type="string" optional="{true}" />
 
     <f:variable name="image"><f:slot name="image" /></f:variable>
     <f:variable name="body"><f:slot name="body" /></f:variable>
@@ -50,6 +53,7 @@
 
     <co:cssClass value="card--{variant}" condition="{variant}" />
     <co:cssClass value="card--interactive" condition="{url}" />
+    <co:cssClass value="card--layout-{layout}" condition="{layout}" />
 
     <f:section name="Main">
       <f:slot/>
