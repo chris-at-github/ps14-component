@@ -15,7 +15,7 @@
         - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
         - class: (string, optional) Zusätzliche CSS-Klassen für das Container-Element
         - ratio: (string, optional) Seitenverhältnis, z.B. "16-9", "1-1"
-        - priority: (boolean, optional, Standard: false) Bild wird als LCP priorisiert geladen
+        - priority: (string, optional, Standard: low) Bild wird als LCP priorisiert geladen
         - width: (int, optional, Standard: 810) Maximale Breite für das Bild
         - sizes: (array, optional) Responsive Breakpoints für das Bild
         - description: (boolean, optional, Standard: true) Bildbeschreibung anzeigen
@@ -38,7 +38,7 @@
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="ratio" type="string" optional="{true}" />
-    <f:argument name="priority" type="boolean" optional="{true}" default="{false}" />
+    <f:argument name="priority" type="string" optional="{true}" default="low" />
     <f:argument name="width" type="int" optional="{true}" default="810" />
     <f:argument name="sizes" type="array" optional="{true}" />
     <f:argument name="description" type="boolean" optional="{true}" default="{true}" />
