@@ -1,13 +1,12 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:form.label>
 
         Parameter:
         - id: (string) ID des Feldes, auf das das Label verweist (Pflicht)
-        - label: (string) Text des Labels (Pflicht)
+        - label: (string) Text des Labels (Pflicht); einfaches HTML (z. B. Links) ist erlaubt und wird per f:sanitize.html bereinigt
         - required: (bool) Optional, zeigt "erforderlich"-Hinweis an, wenn true
 
         Beispielhafte Aufrufe:
@@ -23,9 +22,9 @@
     <f:argument name="label" type="string" />
     <f:argument name="required" type="boolean" optional="{true}" />
 
-    <label class="form-label" for="{id}"><f:format.raw>{label}</f:format.raw>
+    <label class="form-label" for="{id}"><f:sanitize.html>{label}</f:sanitize.html>
         <f:if condition="{required}">
-            <span class="form-label__required"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:label.required" /></span>
+            <span class="form-label__required"><f:translate key="label.required" domain="ps14_component.messages" /></span>
         </f:if>
     </label>
 </html>

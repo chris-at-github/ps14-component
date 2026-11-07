@@ -1,0 +1,95 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:cv="http://typo3.org/ns/Ps14/Component/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+<f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:form.item.datepicker>
+
+        Beschreibung:
+        Internes Layout-Wrapper-Template für Datumsfelder (`<input type="date">`).
+        Aufbau analog zu <co:form.item.select>: Das Feld wird zusätzlich in einen
+        Positionierungs-Container (`form-item-container form-item-container--datepicker`)
+        gelegt. In diesem Container liegt neben dem Datumsfeld ein echter, fokussierbarer
+        `<button>`, der den nativen Datepicker öffnet.
+
+        Hintergrund:
+        Der native Webkit-Auslöser (`::-webkit-calendar-picker-indicator`) zeigt bei
+        Tastaturbedienung keinen sichtbaren Fokus und lässt sich per CSS nicht anpassen.
+        Der eigene Button ist per Tastatur erreichbar, zeigt einen sichtbaren Fokus und
+        öffnet den Kalender per JavaScript (`input.showPicker()`, siehe
+        Scripts/components/datepicker.js, verdrahtet in Scripts/bootstrap/forms.js).
+
+        Verhalten:
+        - Wird keine `id` übergeben, wird automatisch eine eindeutige ID generiert,
+            damit Label (`for`) und Button (`aria-controls`) korrekt mit dem Feld verknüpft sind.
+        - `disabled` setzt den Modifier `form-item--disabled` am Container und deaktiviert
+            zusätzlich den Button.
+        - Werden `errors` übergeben, wird der Modifier `form-field--error` an die
+            `fieldClass`-Variable angehängt, die über den Slot an das Datumsfeld weitergegeben wird.
+        - Über `<cv:slot>` werden die Variablen `id` und `fieldClass` an das eingebettete
+            Datumsfeld übergeben.
+
+        Parameter:
+        - id (string, optional): ID des Feldes. Wird automatisch generiert, falls leer.
+        - label (string, Pflicht): Label-Text.
+        - required (boolean, optional): Markiert das Feld als Pflichtfeld.
+        - description (string, optional): Beschreibungstext unter dem Label.
+        - type (string, Standard "date"): Feldtyp – wird als Modifier `form-field--{type}` gesetzt.
+        - class (string, optional): Zusätzliche CSS-Klassen am Datumsfeld (via fieldClass).
+        - errors (string[], optional): Fehlermeldungen, aktiviert Fehler-Styling.
+        - disabled (boolean, optional): Deaktiviert Feld und Button (Modifier form-item--disabled).
+        - buttonLabel (string, optional): Barrierefreies Label (aria-label) des Öffnen-Buttons.
+            Standard: übersetztes Label "datepicker.button-label" (locallang_frontend.xlf).
+
+        Slot-Variablen (für das eingebettete Datumsfeld):
+        - id: Generierte oder übergebene ID des Feldes.
+        - fieldClass: Zusammengesetzte CSS-Klassen für das Datumsfeld.
+
+        Vollständige Dokumentation: ./Documentation/Form.Item.Datepicker.md
+
+        Beispielhafte Verwendung:
+        <co:form.item.datepicker label="{label}" required="{required}">
+            <f:form.textfield type="date" property="{property}" id="{id}" class="{fieldClass}" />
+        </co:form.item.datepicker>
+    -->
+</f:comment>
+
+<f:argument name="id" type="string" optional="{true}" default="" />
+<f:argument name="label" type="string" />
+<f:argument name="required" type="boolean" optional="{true}" />
+<f:argument name="description" type="string" optional="{true}" />
+<f:argument name="type" type="string" default="date" />
+<f:argument name="class" type="string" optional="{true}" />
+<f:argument name="errors" type="string[]" optional="{true}" />
+<f:argument name="disabled" type="boolean" optional="{true}" />
+<f:argument name="buttonLabel" type="string" optional="{true}" default="" />
+
+<f:if condition="{id} == ''">
+    <f:variable name="id">form-field--{fo:randomId()}</f:variable>
+</f:if>
+
+<f:if condition="{buttonLabel} == ''">
+    <f:variable name="buttonLabel"><f:translate key="datepicker.button-label" domain="ps14_component.messages" /></f:variable>
+</f:if>
+
+<fo:cssClass name="itemClass" value="form-item" />
+<fo:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
+
+<fo:cssClass name="fieldClass" value="{class}" condition="{class}" />
+<fo:cssClass name="fieldClass" value="form-field form-field--default form-field--{type} form-item-container__field" />
+<fo:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
+
+<div class="{itemClass}">
+    <co:form.label id="{id}" label="{label}" required="{required}" />
+    <co:form.description description="{description}" />
+
+    <div class="form-item-container form-item-container--datepicker" data-datepicker>
+        <cv:slot variables="{
+            id: '{id}',
+            fieldClass: '{fieldClass}',
+        }" />
+        <button type="button" class="form-item-container__datepicker-button" data-datepicker-button aria-label="{buttonLabel}" aria-controls="{id}" disabled="{disabled}"></button>
+    </div>
+
+    <co:form.error errors="{errors}" />
+</div>
+</html>

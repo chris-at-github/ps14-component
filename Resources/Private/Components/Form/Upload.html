@@ -1,0 +1,87 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+        <!--
+            Dokumentation: Fluid-Komponente <co:form.upload>
+
+            Beschreibung:
+            Rendert ein Datei-Upload-Feld (`<input type="file">`) mit zugehörigem Label,
+            optionaler Beschreibung und Fehlerausgabe im standardisierten Form-Markup
+            (BEM: form-field, form-field--upload, form-item). Unterstützt Einzel- und
+            Mehrfach-Uploads sowie Einschränkungen auf bestimmte Dateitypen.
+
+            Verhalten:
+            - Wird keine `id` übergeben, wird automatisch eine eindeutige ID generiert
+                (`form-field--{random}`), damit das Label per `for`-Attribut korrekt mit dem
+                Input verknüpft werden kann.
+            - Ist `multiple=true`, wird das `multiple`-Attribut am Input gesetzt und der
+                Name automatisch als `{name}[]` ausgegeben, damit mehrere Dateien übertragen
+                werden können.
+            - Über `accept` können erlaubte Dateitypen eingeschränkt werden (z.B. "image/*",
+                ".pdf,.docx" oder MIME-Types).
+            - `required` wird sowohl am Input als auch am Label gesetzt, damit das
+                Pflichtfeld semantisch und visuell erkennbar ist.
+            - Werden `errors` übergeben, erhält der Block den Modifier `form-field--error`
+                und die Fehlermeldungen werden über `<co:form.error>` ausgegeben.
+            - `disabled` deaktiviert das Feld und setzt den Modifier `form-item--disabled`.
+
+            Parameter:
+            - id (string, optional): ID des Inputs. Wird automatisch generiert, falls leer.
+            - name (string, Pflicht): Name des Feldes (Request-Key).
+            - label (string, Pflicht): Label-Text.
+            - required (boolean, optional): Markiert das Feld als Pflichtfeld.
+            - description (string, optional): Beschreibungstext unter dem Label.
+            - accept (string, optional): Erlaubte Dateitypen, z.B. "image/*" oder ".pdf,.docx".
+            - multiple (boolean, optional): Erlaubt die Auswahl mehrerer Dateien.
+            - class (string, optional): Zusätzliche CSS-Klassen am Input.
+            - errors (string[], optional): Fehlermeldungen, aktiviert Fehler-Styling.
+            - disabled (boolean, optional): Deaktiviert das Feld.
+            - attributes (array, optional): Zusätzliche HTML-Attribute als Key/Value-Map.
+
+            Vollständige Dokumentation: ./Documentation/Form.Upload.md
+
+            Beispielhafte Aufrufe:
+            <co:form.upload name="avatar" label="Profilbild hochladen" accept="image/*" />
+            <co:form.upload name="documents" label="Dokumente hochladen" multiple="true" accept=".pdf,.docx" required="true" />
+            <co:form.upload name="file" label="Datei" required="true" errors="{0: 'Bitte lade eine Datei hoch.'}" />
+            <co:form.upload name="attachment" label="Anhang" disabled="true" description="Datei-Upload ist derzeit nicht verfügbar." />
+        -->
+    </f:comment>
+
+    <f:argument name="id" type="string" optional="{true}" default="" />
+    <f:argument name="name" type="string" />
+    <f:argument name="label" type="string" />
+    <f:argument name="required" type="boolean" optional="{true}" />
+    <f:argument name="description" type="string" optional="{true}" />
+    <f:argument name="accept" type="string" optional="{true}" />
+    <f:argument name="multiple" type="boolean" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="errors" type="string[]" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="attributes" type="array" optional="{true}" default="{}" />
+
+    <f:if condition="{multiple}">
+        <f:then><f:variable name="fieldName">{name}[]</f:variable></f:then>
+        <f:else><f:variable name="fieldName">{name}</f:variable></f:else>
+    </f:if>
+
+    <co:form.item.default
+        label="{label}"
+        required="{required}"
+        description="{description}"
+        errors="{errors}"
+        type="upload"
+    >
+        <input
+            type="file"
+            id="{id}"
+            name="{fieldName}"
+            class="{fieldClass}"
+            accept="{accept}"
+            disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+            required="{f:if(condition: '{required}', then: 'required')}"
+            multiple="{f:if(condition: '{multiple}', then: 'multiple')}"
+            <f:for each="{attributes}" as="attrValue" key="attrName"> {attrName}="{attrValue}"</f:for>
+        >
+    </co:form.item.default>
+</html>

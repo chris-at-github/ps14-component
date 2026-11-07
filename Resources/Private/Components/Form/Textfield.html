@@ -1,7 +1,5 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
         <!--
             Dokumentation: Fluid-Komponente <co:form.textfield>
@@ -18,12 +16,14 @@
             - errors: (array) Fehlernachrichten als Array
             - autocomplete: (string, optional) Wert für das autocomplete-Attribut des Feldes (z\.B\. "off", "email", "username")
             - disabled: (bool, optional) true/false – deaktiviert das Feld und verhindert die Eingabe
+            - attributes: (array, optional) Zusätzliche HTML-Attribute als Key/Value-Map, z.B. pattern, minlength, maxlength, min, max, step, inputmode oder data-* Attribute
 
             Beispielhafte Aufrufe:
             <co:form.textfield id="form-field--hj32i5" name="name" label="Name" value="Christian Pschorr" />
             <co:form.textfield id="form-field--zuwkn4" name="username" label="Benutzername" required="true" description="Der Benutzername muss einzigartig sein..." value="pschorr-christian" />
             <co:form.textfield id="form-field--u45hoi3" name="password" label="Passwort" required="true" description="Das Passwort muss mindestens 8 Zeichen lang sein..." type="password" value="pschorr-christian" errors="{0: 'Es darf nicht das gleiche Passwort...', 1: 'Das Passwort ist zu schwach...'}" errorClass="form-field--error" />
             <co:form.textfield id="form-field--hiowek" name="mail" autocomplete="email" disabled="true" label="E-Mail" required="true" type="email" value="" />
+            <co:form.textfield name="username" label="Benutzername" required="true" attributes="{pattern: '[a-z0-9-]+', minlength: '3', maxlength: '32'}" />
         -->
     </f:comment>
 
@@ -38,6 +38,7 @@
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="autocomplete" type="string" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="attributes" type="array" optional="{true}" default="{}" />
 
     <f:if condition="{id} == ''">
         <f:variable name="id">form-field--{fo:randomId()}</f:variable>
@@ -47,42 +48,30 @@
         <f:variable name="autocomplete">off</f:variable>
     </f:if>
 
-    <co:cssClass name="itemClass" value="form-item" />
-    <co:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
+    <fo:cssClass name="itemClass" value="form-item" />
+    <fo:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
 
-    <co:cssClass name="fieldClass" value="{class}" condition="{class}" />
-    <co:cssClass name="fieldClass" value="form-field form-field--default form-field--{type}" />
-    <co:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
+    <fo:cssClass name="fieldClass" value="{class}" condition="{class}" />
+    <fo:cssClass name="fieldClass" value="form-field form-field--default form-field--{type}" />
+    <fo:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
 
-    <div class="{itemClass}">
-        <co:form.label id="{id}" label="{label}" required="{required}" />
-        <co:form.description description="{description}" />
-
+    <co:form.item.default
+        label="{label}"
+        required="{required}"
+        description="{description}"
+        errors="{errors}"
+        type="{type}"
+    >
         <input
-          type="{type}"
-          id="{id}"
-          name="{name}"
-          class="{fieldClass}"
-          value="{value}"
-          disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
-          required="{f:if(condition: '{required}', then: 'required')}"
-          autocomplete="{autocomplete}"
+            type="{type}"
+            id="{id}"
+            name="{name}"
+            class="{fieldClass}"
+            value="{value}"
+            disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+            required="{f:if(condition: '{required}', then: 'required')}"
+            autocomplete="{autocomplete}"
+            <f:for each="{attributes}" as="attrValue" key="attrName"> {attrName}="{attrValue}"</f:for>
         >
-
-        <co:form.error errors="{errors}" />
-    </div>
-
-<f:comment>
-    <!--
-    <f:if condition="{property}">
-        <f:form.textfield
-          id="{id}"
-          name="{name}"
-          value="{value}"
-          type="{type}"
-          class="form-field form-field--default form-field--{type} {class} {f:if(condition: errors, then: errorClass)}"
-          required="{required}" />
-    </f:if>
-    -->
-</f:comment>
+    </co:form.item.default>
 </html>

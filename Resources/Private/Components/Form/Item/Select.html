@@ -1,0 +1,83 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:cv="http://typo3.org/ns/Ps14/Component/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+<f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:form.item.select>
+
+        Beschreibung:
+        Internes Layout-Wrapper-Template für Select-Formularfelder (`<select>`).
+        Rendert das standardisierte Form-Markup (BEM: form-item, form-item-container,
+        form-item-container--select) mit Label, Beschreibung, einem umschließenden
+        Container-Div für das Select-Element und Fehlerausgabe.
+        Wird von `<co:form.select>` intern verwendet, nicht direkt aufgerufen.
+
+        Verhalten:
+        - Wird keine `id` übergeben, wird automatisch eine eindeutige ID generiert
+            (`form-field--{random}`), damit das Label per `for`-Attribut korrekt mit dem
+            Select verknüpft werden kann.
+        - Das Slot-Element wird in einem `<div class="form-item-container form-item-container--select">`
+            gerendert – ermöglicht CSS-Styling für Custom-Select-Dropdowns.
+        - `disabled` setzt den Modifier `form-item--disabled` am Container.
+        - Werden `errors` übergeben, wird der Modifier `form-field--error` an die
+            `fieldClass`-Variable angehängt, die über den Slot an das Select-Element
+            weitergegeben wird.
+        - Über `<cv:slot>` werden die Variablen `id` und `fieldClass` an das eingebettete
+            Select-Element übergeben.
+
+        Parameter:
+        - id (string, optional): ID des Feldes. Wird automatisch generiert, falls leer.
+        - label (string, Pflicht): Label-Text.
+        - required (boolean, optional): Markiert das Feld als Pflichtfeld.
+        - description (string, optional): Beschreibungstext unter dem Label.
+        - type (string, Standard "text"): Feldtyp – wird als Modifier `form-field--{type}` gesetzt.
+        - class (string, optional): Zusätzliche CSS-Klassen am Select (via fieldClass).
+        - errors (string[], optional): Fehlermeldungen, aktiviert Fehler-Styling.
+        - disabled (boolean, optional): Deaktiviert das Feld (Modifier form-item--disabled).
+
+        Slot-Variablen (für das eingebettete Select-Element):
+        - id: Generierte oder übergebene ID des Feldes.
+        - fieldClass: Zusammengesetzte CSS-Klassen für das Select-Element.
+
+        Vollständige Dokumentation: ./Documentation/Form.Item.Select.md
+
+        Beispielhafte Verwendung (intern durch andere Komponenten):
+        <co:form.item.select id="{id}" label="{label}" required="{required}" description="{description}" errors="{errors}" disabled="{disabled}">
+            <select id="{id}" name="{name}" class="{fieldClass}">...</select>
+        </co:form.item.select>
+    -->
+</f:comment>
+
+<f:argument name="id" type="string" optional="{true}" default="" />
+<f:argument name="label" type="string" />
+<f:argument name="required" type="boolean" optional="{true}" />
+<f:argument name="description" type="string" optional="{true}" />
+<f:argument name="type" type="string" default="text" />
+<f:argument name="class" type="string" optional="{true}" />
+<f:argument name="errors" type="string[]" optional="{true}" />
+<f:argument name="disabled" type="boolean" optional="{true}" />
+
+<f:if condition="{id} == ''">
+    <f:variable name="id">form-field--{fo:randomId()}</f:variable>
+</f:if>
+
+<fo:cssClass name="itemClass" value="form-item" />
+<fo:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
+
+<fo:cssClass name="fieldClass" value="{class}" condition="{class}" />
+<fo:cssClass name="fieldClass" value="form-field form-field--default form-field--select form-item-container__field" />
+<fo:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
+
+<div class="{itemClass}">
+    <co:form.label id="{id}" label="{label}" required="{required}" />
+    <co:form.description description="{description}" />
+
+    <div class="form-item-container form-item-container--select">
+        <cv:slot variables="{
+            id: '{id}',
+            fieldClass: '{fieldClass}',
+        }" />
+    </div>
+
+    <co:form.error errors="{errors}" />
+</div>
+</html>

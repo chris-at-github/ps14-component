@@ -1,43 +1,57 @@
 <html
-  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-  data-namespace-typo3-fluid="true">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:card>
 
-        Namespace:
-        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-
         Argumente für <co:card>:
-        - variant: (string, optional) z.B. "default", "primary" – bestimmt die Card-Variante/Klasse
+        - variant: (string, optional) Bestimmt die Card-Variante als Modifier, z.B. "primary" → card--primary, "feature" → card--feature
         - id: (string, optional) Optionale ID für die Card
         - class: (string, optional) Zusätzliche CSS-Klassen für die Card
-        - url: (string, optional) Wenn gesetzt, wird die Card als Link ausgegeben
-        - layout: (string, optional) Layout-Variante, z.B. "horizontal-im-bo-ac"
+        - url: (string, optional) Wenn gesetzt, wird die Card als verlinktes <a>-Element ausgegeben (card--interactive).
+            Eine verlinkte Card darf keine weiteren Links oder Buttons enthalten.
+        - layout: (string, optional) Layout-Variante als Modifier, z.B. "horizontal-im-bo-ac" → card--layout-horizontal-im-bo-ac
 
         Slots:
         - image: (optional) Bild- oder Icon-Komponente, z.B. <co:card.image />
-        - body: (optional) Inhalt der Card, z.B. <co:header />, <co:richtext />
+            Kann direkt als Kind-Element oder über <f:fragment name="image"> übergeben werden.
+        - body: (optional) Inhalt der Card, z.B. <co:heading />, <co:richtext />
         - actions: (optional) Aktions-Buttons, z.B. <co:button />
 
         Beispielhafte Aufrufe:
-        <co:card>
+
+        Einfache Card mit Icon (ohne Slots):
+        <co:card variant="primary" class="teaser-item" url="#">
+            <co:card.image icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/calendar.svg" />
+        </co:card>
+
+        Card mit Bild (ohne Slots):
+        <co:card variant="primary" class="teaser-item" url="#">
+            <co:card.image image="{data.image.0}" imageOptions="{width: 480, priority: 'high'}" />
+        </co:card>
+
+        Vollständige Card mit Slots:
+        <co:card variant="primary" class="teaser-item" url="#">
             <f:fragment name="image">
-                <co:card.image image="{image}" />
+                <co:card.image icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/calendar.svg" />
             </f:fragment>
             <f:fragment name="body">
-                <co:header>Card Titel</co:header>
-                <co:richtext content="{description}" />
+                <co:heading layout="3" class="card__title">Card Titel</co:heading>
+                <co:richtext class="card__description">
+                    <p>Beschreibungstext der Card.</p>
+                </co:richtext>
             </f:fragment>
             <f:fragment name="actions">
-                <co:button>Details</co:button>
+                <co:button class="card__action">Details</co:button>
             </f:fragment>
         </co:card>
-        <co:card variant="primary" class="my-card">Card mit Klasse</co:card>
-        <co:card url="/seite">Klickbare Card</co:card>
-        <co:card layout="horizontal-im-bo-ac">Card mit Layout-Variante</co:card>
+
+        Weitere Varianten:
+        <co:card variant="feature">...</co:card>
+        <co:card layout="horizontal-im-bo-ac">...</co:card>
     -->
     </f:comment>
 
@@ -47,39 +61,39 @@
     <f:argument name="url" type="string" optional="{true}" />
     <f:argument name="layout" type="string" optional="{true}" />
 
-    <f:variable name="image"><f:slot name="image" /></f:variable>
-    <f:variable name="body"><f:slot name="body" /></f:variable>
-    <f:variable name="actions"><f:slot name="actions" /></f:variable>
+        <f:variable name="image"><f:slot name="image" /></f:variable>
+        <f:variable name="body"><f:slot name="body" /></f:variable>
+        <f:variable name="actions"><f:slot name="actions" /></f:variable>
 
-    <co:cssClass value="card--{variant}" condition="{variant}" />
-    <co:cssClass value="card--interactive" condition="{url}" />
-    <co:cssClass value="card--layout-{layout}" condition="{layout}" />
+    <fo:cssClass value="card--{variant}" condition="{variant}" />
+    <fo:cssClass value="card--interactive" condition="{url}" />
+    <fo:cssClass value="card--layout-{layout}" condition="{layout}" />
 
-    <f:section name="Main">
-      <f:slot/>
-      <f:if condition="{image}">
-        {image -> f:format.raw()}
-      </f:if>
+        <f:section name="Main">
+            <f:slot/>
+            <f:if condition="{image}">
+                <f:slot name="image" />
+            </f:if>
 
-      <f:if condition="{body}">
-        <div class="card__body">{body -> f:format.raw()}</div>
-      </f:if>
+            <f:if condition="{body}">
+                <div class="card__body"><f:slot name="body" /></div>
+            </f:if>
 
-      <f:if condition="{actions}">
-        <div class="card__actions">{actions -> f:format.raw()}</div>
-      </f:if>
-    </f:section>
+            <f:if condition="{actions}">
+                <div class="card__actions"><f:slot name="actions" /></div>
+            </f:if>
+        </f:section>
 
-    <f:if condition="{url}">
-      <f:then>
-        <a href="{url}" id="{id}" class="card {class}">
-          <f:render section="Main" arguments="{_all}" />
-        </a>
-      </f:then>
-      <f:else>
-        <div class="card {class}">
-          <f:render section="Main" arguments="{_all}" />
-        </div>
-      </f:else>
-    </f:if>
+        <f:if condition="{url}">
+            <f:then>
+                <a href="{url}" id="{id}" class="card {class}">
+                    <f:render section="Main" arguments="{_all}" />
+                </a>
+            </f:then>
+            <f:else>
+                <div class="card {class}">
+                    <f:render section="Main" arguments="{_all}" />
+                </div>
+            </f:else>
+        </f:if>
 </html>

@@ -1,7 +1,5 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:form.textarea>
@@ -17,10 +15,12 @@
         - errors: (array) Fehlernachrichten als Array
         - autocomplete: (string) Wert für das autocomplete-Attribut (optional)
         - disabled: (bool, optional) true/false – deaktiviert das Feld und verhindert die Eingabe
+        - attributes: (array, optional) Zusätzliche HTML-Attribute als Key/Value-Map, z.B. minlength, maxlength, rows, cols, placeholder, inputmode oder data-* Attribute
 
         Beispielhafte Aufrufe:
         <co:form.textarea id="form-field--desc" disabled="true" name="desc" label="Beschreibung" value="Test" />
         <co:form.textarea id="form-field--bio" name="bio" label="Biografie" required="true" description="Bitte geben Sie Ihre Biografie ein." value="" autocomplete="off" />
+        <co:form.textarea name="bio" label="Biografie" attributes="{minlength: '10', maxlength: '500', placeholder: 'Erzählen Sie etwas über sich...'}" />
     -->
     </f:comment>
 
@@ -34,22 +34,19 @@
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="autocomplete" type="string" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="attributes" type="array" optional="{true}" default="{}" />
 
-    <f:if condition="{id} == ''">
-        <f:variable name="id">form-field--{fo:randomId()}</f:variable>
+    <f:if condition="{autocomplete} == ''">
+        <f:variable name="autocomplete">off</f:variable>
     </f:if>
 
-    <co:cssClass name="itemClass" value="form-item" />
-    <co:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
-
-    <co:cssClass name="fieldClass" value="{class}" condition="{class}" />
-    <co:cssClass name="fieldClass" value="form-field form-field--default form-field--textarea" />
-    <co:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
-
-    <div class="{itemClass}">
-        <co:form.label id="{id}" label="{label}" required="{required}" />
-        <co:form.description description="{description}" />
-
+    <co:form.item.default
+        label="{label}"
+        required="{required}"
+        description="{description}"
+        errors="{errors}"
+        type="textarea"
+    >
         <textarea
             rows="5"
             cols="40"
@@ -58,8 +55,8 @@
             class="{fieldClass}"
             disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
             required="{f:if(condition: '{required}', then: 'required')}"
-            autocomplete="{autocomplete}">{value}</textarea>
-
-        <co:form.error errors="{errors}" />
-    </div>
+            autocomplete="{autocomplete}"
+        <f:for each="{attributes}" as="attrValue" key="attrName"> {attrName}="{attrValue}"</f:for>
+        >{value}</textarea>
+    </co:form.item.default>
 </html>

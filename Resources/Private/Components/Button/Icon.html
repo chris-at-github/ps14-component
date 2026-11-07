@@ -1,14 +1,39 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" data-namespace-typo3-fluid="true">
-    <f:argument name="icon" type="string" />
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:button.icon>
+
+        Parameter für <co:button.icon>:
+        - icon: (string, optional) Voller EXT-Pfad zur SVG-Datei, z. B. "EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg", die im Button angezeigt wird; eingebettet über fo:svg.inline.
+        - variant: (string, optional) z.B. "default", "primary" – bestimmt die Button-Variante/Klasse
+        - disabled: (bool, optional) true/false – deaktiviert den Button
+        - label: (string, optional) Aria-Label für den Button (für Barrierefreiheit)
+        - id: (string, optional) optionale ID für den Button
+        - class: (string, optional) optionale zusätzliche CSS-Klassen für den Button
+        - type: (string, optional) HTML-Attribut type des Buttons, z.B. "button", "submit", "reset" – Standard: "button"
+
+        Beispielhafte Aufrufe:
+        <co:button.icon icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/star-fill.svg" label="Favorit" />
+        <co:button.icon variant="primary" icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/star-fill.svg" label="Button Star" />
+        <co:button.icon variant="default" icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg" label="Bestätigen" disabled="true" />
+    -->
+    </f:comment>
+
+    <f:argument name="icon" type="string" optional="{true}" />
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="id" type="string" optional="{true}" />
     <f:argument name="label" type="string" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="type" type="string" optional="{true}" default="button" />
 
-    <co:cssClass value="button--{variant}" condition="{variant}" />
+    <fo:cssClass value="button--{variant}" condition="{variant}" />
 
-    <button id="{id}" class="button button--icon {class}" {f:if(condition: disabled, then: 'disabled="disabled"')} aria-label="{label}">
-        <fo:svg.inline source="{icon}" class="button__icon" />
+    <button id="{id}" type="{type}" class="button button--icon {class}" {f:if(condition: disabled, then: 'disabled="disabled"')} aria-label="{label}">
+        <fo:svg.inline source="{icon}" class="button__icon"/>
     </button>
 </html>

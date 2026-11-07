@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2026-11-07T12:00:00Z" product-name="ps14_component">
+    <header/>
+    <body>
+      <trans-unit id="label.required" approved="yes">
+        <source>(required)</source>
+        <target>(erforderlich)</target>
+      </trans-unit>
+      <trans-unit id="media.source" approved="yes">
+        <source>Source:</source>
+        <target>Quelle:</target>
+      </trans-unit>
+      <trans-unit id="media.copyright" approved="yes">
+        <source>Figure:</source>
+        <target>Abbildung:</target>
+      </trans-unit>
+      <trans-unit id="media.creator-tool" approved="yes">
+        <source>Created with:</source>
+        <target>Erstellt mit:</target>
+      </trans-unit>
+      <trans-unit id="datepicker.button-label" approved="yes">
+        <source>Open calendar</source>
+        <target>Kalender öffnen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

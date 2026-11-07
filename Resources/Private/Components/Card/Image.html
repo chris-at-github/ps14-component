@@ -1,56 +1,69 @@
 <html
-  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-  data-namespace-typo3-fluid="true">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:card.image>
 
-        Namespace:
-        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-
         Parameter für <co:card.image>:
-        - image: (object, optional) Bild-Objekt, das ausgegeben werden soll
-        - icon: (string|TYPO3\CMS\Core\Resource\FileReference, optional) Pfad zu einer SVG/Icon-Datei oder FileReference
-        - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
-        - class: (string, optional) Zusätzliche CSS-Klassen für das Bild-Element
-        - ratio: (string, optional) Seitenverhältnis, z.B. "16-9", "1-1"
+        - image:        (object, optional) Bild-Objekt, das ausgegeben werden soll
+        - icon:         (string, optional) Voller EXT-Pfad zur SVG-Datei, z. B. "EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg"; eingebettet über fo:svg.inline.
+        - variant:      (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse als Modifier
+        - class:        (string, optional) Zusätzliche CSS-Klassen für den äußeren Wrapper-Container
+        - ratio:        (string, optional) Seitenverhältnis für den Bild- und Icon-Container, z.B. "16-9", "1-1"
+        - imageOptions: (array, optional)  Optionen für fo:media.responsive. Mögliche Keys:
+            - width:    (integer, optional) Maximale Bildbreite in px. Standard: 540
+            - priority: (string, optional)  Ladepriorität, z.B. "high" oder "low". Standard: "low"
+            - sizes:    (array, optional)   Srcset-Größen als numerisches Array. Standard: {0: 360, 1: 480, 2: 640, 3: 1024}
+
+        Hinweis:
+        - Wird weder image noch icon übergeben, wird kein HTML ausgegeben.
+        - Das Bild wird intern über fo:media.responsive mit srcset gerendert.
+        - Ohne imageOptions werden die Standardwerte (width=540, priority=low) verwendet.
+        - Ein leeres sizes-Array fällt auf die Standardwerte zurück (sowohl in der Komponente als auch im ViewHelper).
 
         Beispielhafte Aufrufe:
         <co:card.image image="{image}" />
-        <co:card.image icon="EXT:site/Resources/Public/Icons/sample.svg" />
-        <co:card.image icon="{iconFileReference}" />
-        <co:card.image image="{image}" variant="primary" class="my-image" />
+        <co:card.image icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg" />
+        <co:card.image image="{image}" variant="primary" class="my-custom-class" />
         <co:card.image image="{image}" ratio="16-9" />
-        <co:card.image icon="{iconFileReference}" ratio="1-1" />
+        <co:card.image icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg" ratio="1-1" />
+        <co:card.image image="{image}" imageOptions="{width: 800, priority: 'low', sizes: {0: 480, 1: 640, 2: 1024, 3: 1440}}" />
     -->
     </f:comment>
 
     <f:argument name="image" type="object" optional="{true}" />
-    <f:argument name="icon" type="mixed" optional="{true}" />
+    <f:argument name="icon" type="string" optional="{true}" />
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="ratio" type="string" optional="{true}" />
+    <f:argument name="imageOptions" type="array" optional="{true}" />
+
+        <f:if condition="{imageOptions.width}">
+            <f:then><f:variable name="imageWidth" value="{imageOptions.width}" /></f:then>
+            <f:else><f:variable name="imageWidth" value="540" /></f:else>
+        </f:if>
 
     <f:if condition="{image}">
-      <co:cssClass value="card__image card__image--picture" />
-      <co:cssClass value="card__image--{variant}" condition="{variant}" />
-      <co:cssClass value="media-container media-container--picture" />
-      <co:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
+        <fo:cssClass value="card__image card__image--picture" />
+        <fo:cssClass value="card__image--{variant}" condition="{variant}" />
+        <fo:cssClass value="media-container media-container--picture" />
+        <fo:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
 
-      <div class="{class}">
-        <fo:media.responsive image="{image}" class="media-container__source" width="540" priority="false" sizes="{0: 360, 1: 480, 2: 640, 3: 1024}" />
-      </div>
+        <div class="{class}">
+            <fo:media.responsive image="{image}" class="media-container__source" width="{imageWidth}" priority="{imageOptions.priority}" sizes="{imageOptions.sizes}" />
+        </div>
     </f:if>
 
     <f:if condition="{icon}">
-      <co:cssClass value="card__image card__image--icon icon-container" />
-      <co:cssClass value="card__image--{variant}" condition="{variant}" />
-      <co:cssClass value="icon-container--ratio icon-container--ratio-{ratio}" condition="{ratio}" />
+        <fo:cssClass value="card__image card__image--icon icon-container" />
+        <fo:cssClass value="card__image--{variant}" condition="{variant}" />
+        <fo:cssClass value="icon-container--ratio icon-container--ratio-{ratio}" condition="{ratio}" />
 
-      <div class="{class}">
-        <fo:svg.inline source="{icon}" class="icon-container__source" />
-      </div>
+        <div class="{class}">
+            <fo:svg.inline source="{icon}" class="icon-container__source" />
+        </div>
     </f:if>
 </html>

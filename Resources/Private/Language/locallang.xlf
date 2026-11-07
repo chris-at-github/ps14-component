@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="messages" date="2026-11-07T12:00:00Z" product-name="ps14_component">
+    <header/>
+    <body>
+      <trans-unit id="label.required">
+        <source>(required)</source>
+      </trans-unit>
+      <trans-unit id="media.source">
+        <source>Source:</source>
+      </trans-unit>
+      <trans-unit id="media.copyright">
+        <source>Figure:</source>
+      </trans-unit>
+      <trans-unit id="media.creator-tool">
+        <source>Created with:</source>
+      </trans-unit>
+      <trans-unit id="datepicker.button-label">
+        <source>Open calendar</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

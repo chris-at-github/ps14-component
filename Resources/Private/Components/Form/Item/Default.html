@@ -1,0 +1,78 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:cv="http://typo3.org/ns/Ps14/Component/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+<f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:form.item.default>
+
+        Beschreibung:
+        Internes Layout-Wrapper-Template für Formularfelder. Rendert das standardisierte
+        Form-Markup (BEM: form-item, form-item--disabled) mit Label, Beschreibung, Fehlerausgabe
+        und einem Slot für das eigentliche Input-Element. Wird von anderen Formular-Komponenten
+        (z.B. <co:form.textfield>, <co:form.textarea>) intern verwendet, nicht direkt aufgerufen.
+
+        Verhalten:
+        - Wird keine `id` übergeben, wird automatisch eine eindeutige ID generiert
+            (`form-field--{random}`), damit das Label per `for`-Attribut korrekt mit dem
+            Input verknüpft werden kann.
+        - `disabled` setzt den Modifier `form-item--disabled` am Container.
+        - Werden `errors` übergeben, wird der Modifier `form-field--error` an die
+            `fieldClass`-Variable angehängt, die über den Slot an das Input-Element
+            weitergegeben wird.
+        - Über `<cv:slot>` werden die Variablen `id` und `fieldClass` an das eingebettete
+            Input-Element übergeben.
+
+        Parameter:
+        - id (string, optional): ID des Feldes. Wird automatisch generiert, falls leer.
+        - label (string, Pflicht): Label-Text.
+        - required (boolean, optional): Markiert das Feld als Pflichtfeld.
+        - description (string, optional): Beschreibungstext unter dem Label.
+        - type (string, Standard "text"): Feldtyp – wird als Modifier `form-field--{type}` gesetzt.
+        - class (string, optional): Zusätzliche CSS-Klassen am Input (via fieldClass).
+        - errors (string[], optional): Fehlermeldungen, aktiviert Fehler-Styling.
+        - disabled (boolean, optional): Deaktiviert das Feld (Modifier form-item--disabled).
+
+        Slot-Variablen (für das eingebettete Input-Element):
+        - id: Generierte oder übergebene ID des Feldes.
+        - fieldClass: Zusammengesetzte CSS-Klassen für das Input-Element.
+
+        Vollständige Dokumentation: ./Documentation/Form.Item.Default.md
+
+        Beispielhafte Verwendung (intern durch andere Komponenten):
+        <co:form.item.default id="{id}" label="{label}" required="{required}" description="{description}" type="{type}" class="{class}" errors="{errors}" disabled="{disabled}">
+            <input type="{type}" id="{id}" name="{name}" class="{fieldClass}" value="{value}" />
+        </co:form.item.default>
+    -->
+</f:comment>
+
+<f:argument name="id" type="string" optional="{true}" default="" />
+<f:argument name="label" type="string" />
+<f:argument name="required" type="boolean" optional="{true}" />
+<f:argument name="description" type="string" optional="{true}" />
+<f:argument name="type" type="string" default="text" />
+<f:argument name="class" type="string" optional="{true}" />
+<f:argument name="errors" type="string[]" optional="{true}" />
+<f:argument name="disabled" type="boolean" optional="{true}" />
+
+<f:if condition="{id} == ''">
+    <f:variable name="id">form-field--{fo:randomId()}</f:variable>
+</f:if>
+
+<fo:cssClass name="itemClass" value="form-item" />
+<fo:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
+
+<fo:cssClass name="fieldClass" value="{class}" condition="{class}" />
+<fo:cssClass name="fieldClass" value="form-field form-field--default form-field--{type}" />
+<fo:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
+
+<div class="{itemClass}">
+    <co:form.label id="{id}" label="{label}" required="{required}" />
+    <co:form.description description="{description}" />
+
+    <cv:slot variables="{
+        id: '{id}',
+        fieldClass: '{fieldClass}',
+    }" />
+
+    <co:form.error errors="{errors}" />
+</div>
+</html>

@@ -1,67 +1,124 @@
 <html
-  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-  data-namespace-typo3-fluid="true">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
-    <!--
-        Dokumentation: Fluid-Komponente <co:media.container>
+        <!--
+            Dokumentation: Fluid-Komponente <co:media.container>
 
-        Namespace:
-        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+            Argumente für <co:media.container>:
+            - media: (object, erforderlich) Bild- oder Video-Objekt (FileReference, File)
+            - rendering: (string, optional, Standard: picture) Ausgabe-Typ: "picture" für Bilder, "video" für Videos
+            - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
+            - class: (string, optional) Zusätzliche CSS-Klassen für das Container-Element
+            - mediaClass: (string, optional) Zusätzliche CSS-Klassen direkt am <img>-Tag (ergänzt media-container__source)
+            - ratio: (string, optional) Seitenverhältnis, z.B. "16-9", "1-1"
+            - priority: (string, optional, Standard: low) Bild wird als LCP priorisiert geladen
+            - width: (int, optional, Standard: 810) Maximale Breite für das Bild
+            - sizes: (array, optional) Responsive Breakpoints für das Bild
+            - url: (string, optional) TypoLink (z.B. Seiten-UID, URL, t3://...). Wenn gesetzt, wird das Bild
+                (nur bei rendering="picture", nicht beim Video) mit <f:link.typolink> und der CSS-Klasse
+                media-container__link umschlossen.
+            - description: (boolean, optional, Standard: true) Bildbeschreibung anzeigen
+            - copyright: (boolean, optional, Standard: true) Copyright/Quelle anzeigen
 
-        Argumente für <co:media.container>:
-        - media: (object, erforderlich) Bild-Objekt (FileReference, File)
-        - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse
-        - class: (string, optional) Zusätzliche CSS-Klassen für das Container-Element
-        - ratio: (string, optional) Seitenverhältnis, z.B. "16-9", "1-1"
-        - priority: (string, optional, Standard: low) Bild wird als LCP priorisiert geladen
-        - width: (int, optional, Standard: 810) Maximale Breite für das Bild
-        - sizes: (array, optional) Responsive Breakpoints für das Bild
-        - description: (boolean, optional, Standard: true) Bildbeschreibung anzeigen
-        - copyright: (boolean, optional, Standard: true) Copyright/Quelle anzeigen
+            Funktion:
+            Gibt ein Bild oder Video mit responsivem Verhalten, optionaler Beschreibung und Copyright aus. Das Seitenverhältnis
+            kann über ratio gesteuert werden. Der Ausgabe-Typ wird über rendering gesteuert ("picture" oder "video").
+            Wird url übergeben, verlinkt das Bild per TypoLink; Videos werden nie verlinkt.
 
-        Funktion:
-        Gibt ein Bild mit responsivem Verhalten, optionaler Beschreibung und Copyright aus. Das Seitenverhältnis kann
-        über ratio gesteuert werden. Die Komponente nutzt <fo:media.responsive> für die Bildausgabe.
-
-        Beispielhafte Aufrufe:
-        <co:media.container media="{image}" />
-        <co:media.container media="{image}" ratio="16-9" />
-        <co:media.container media="{image}" variant="primary" class="my-media" />
-        <co:media.container media="{image}" description="false" copyright="false" />
-        <co:media.container media="{image}" priority="true" width="1200" sizes="{0: 360, 1: 480, 2: 640}" />
-    -->
+            Beispielhafte Aufrufe:
+            <co:media.container media="{image}" />
+            <co:media.container media="{image}" ratio="16-9" />
+            <co:media.container media="{image}" variant="primary" class="my-media" />
+            <co:media.container media="{image}" description="false" copyright="false" />
+            <co:media.container media="{image}" priority="high" width="1200" sizes="{0: 360, 1: 480, 2: 640}" />
+            <co:media.container media="{image}" url="42" />
+            <co:media.container media="{image}" url="https://www.example.com" />
+            <co:media.container media="{video}" rendering="video" />
+        -->
     </f:comment>
 
     <f:argument name="media" type="object" />
+    <f:argument name="rendering" type="string" optional="{true}" default="picture"/>
     <f:argument name="variant" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="mediaClass" type="string" optional="{true}" />
     <f:argument name="ratio" type="string" optional="{true}" />
     <f:argument name="priority" type="string" optional="{true}" default="low" />
     <f:argument name="width" type="int" optional="{true}" default="810" />
     <f:argument name="sizes" type="array" optional="{true}" />
+    <f:argument name="url" type="string" optional="{true}" />
     <f:argument name="description" type="boolean" optional="{true}" default="{true}" />
     <f:argument name="copyright" type="boolean" optional="{true}" default="{true}" />
+    <f:argument name="creator" type="boolean" optional="{true}" default="{true}" />
 
-    <co:cssClass value="media-container media-container--picture" />
-    <co:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
-    <co:cssClass value="media-container--{variant}" condition="{variant}" />
+    <fo:cssClass value="media-container" />
+    <fo:cssClass value="media-container media-container--{rendering}" condition="{rendering}" />
+    <fo:cssClass value="media-container--ratio media-container--ratio-{ratio}" condition="{ratio}" />
+    <fo:cssClass value="media-container--{variant}" condition="{variant}" />
 
     <f:if condition="{media}">
-      <div class="{class}">
-        <fo:media.responsive image="{media}" class="media-container__source" width="{width}" priority="{priority}" sizes="{sizes}" />
+        <div class="{class}">
+            <f:if condition="{rendering} == 'picture'">
+                <f:if condition="{url}">
+                    <f:then>
+                        <f:link.typolink parameter="{url}" class="media-container__link">
+                            <f:render section="Picture" arguments="{_all}" />
+                        </f:link.typolink>
+                    </f:then>
+                    <f:else>
+                        <f:render section="Picture" arguments="{_all}" />
+                    </f:else>
+                </f:if>
+            </f:if>
 
-        <f:if condition="{media.description} && {description}">
-          <div class="media-description media-container__description">{media.description -> f:format.nl2br()}</div>
-        </f:if>
+            <f:if condition="{rendering} == 'video'">
+                <f:media
+                    class="media-container__source {mediaClass}"
+                    file="{media}"
+                    width="{width}"
+                    additionalConfig="{settings.media.additionalConfig}"
+                />
+            </f:if>
 
-        <f:if condition="{copyright} && ({media.properties.copyright} || {media.properties.source})">
-          <div class="media-copyright media-container__copyright">
-            <f:if condition="{media.properties.copyright}"><span class="media-copyright__value"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:media.copyright" /> {media.properties.copyright}</span></f:if>
-            <f:if condition="{media.properties.source}"><span class="media-copyright__value"><f:translate key="LLL:EXT:ps14_component/Resources/Private/Language/locallang_frontend.xlf:media.source" /> {media.properties.source}</span></f:if>
-          </div>
-        </f:if>
-      </div>
+            <f:if condition="{media.description} && {description}">
+                <div class="media-description media-container__description">{media.description -> f:format.nl2br()}</div>
+            </f:if>
+
+            <f:if condition="({copyright} || {creator}) && ({media.properties.copyright} || {media.properties.source} || {media.properties.creator_tool})">
+                <div class="media-copyright media-container__copyright">
+                    <f:if condition="{media.properties.copyright}"><span class="media-copyright__value"><f:translate key="media.copyright" domain="ps14_component.messages"/> {media.properties.copyright}</span></f:if>
+                    <f:if condition="{media.properties.source}"><span class="media-copyright__value"><f:translate key="media.source" domain="ps14_component.messages"/> {media.properties.source}</span></f:if>
+                    <f:if condition="{media.properties.creator_tool}"><span class="media-copyright__value"><f:translate key="media.creator-tool" domain="ps14_component.messages"/> {media.properties.creator_tool}</span></f:if>
+                </div>
+            </f:if>
+        </div>
     </f:if>
+
+    <f:section name="Picture">
+        <f:if condition="{priority} == 'high'">
+            <f:then>
+                <f:image
+                    srcset="{f:image.srcset(image: media, srcset: '320w, 480w, 640w, 960w, 1440w', cropVariant: 'default')}"
+                    image="{media}"
+                    sizes="(min-width: {width}px) {width}px, 100vw"
+                    fetchpriority="high"
+                    class="media-container__source {mediaClass}"
+                    maxWidth="{width}"
+                />
+            </f:then>
+            <f:else>
+                <f:image
+                    srcset="{f:image.srcset(image: media, srcset: '320w, 480w, 640w, 960w, 1440w', cropVariant: 'default')}"
+                    image="{media}"
+                    sizes="auto"
+                    loading="lazy"
+                    class="media-container__source {mediaClass}"
+                    maxWidth="{width}"
+                />
+            </f:else>
+        </f:if>
+    </f:section>
 </html>

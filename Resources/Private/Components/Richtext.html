@@ -1,36 +1,39 @@
 <html
-  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-  data-namespace-typo3-fluid="true">
-  <f:comment>
-    <!--
-        Dokumentation: Fluid-Komponente <co:card.body>
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+        <!--
+            Dokumentation: Fluid-Komponente <co:richtext>
 
-        Namespace:
-        xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
+            Parameter für <co:richtext>:
+            - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse des Richtext-Elements
+            - class: (string, optional) Zusätzliche CSS-Klassen für das Richtext-Element
+            - content: (string, optional) HTML-Inhalt als Parameter übergeben
 
-        Parameter für <co:card.body>:
-        - variant: (string, optional) z.B. "default", "primary" – erweitert die CSS-Klasse der Card-Body
-        - class: (string, optional) Zusätzliche CSS-Klassen für das Card-Body-Element
+            Hinweis: Wird HTML-Inhalt als Slot Content übergeben (z.B. aus TYPO3-Datenbankfeldern wie bodytext),
+            muss dieser vorher mit f:format.html() in HTML umgewandelt werden, da der Slot-Inhalt sonst
+            als Text behandelt wird. Beim content-Parameter übernimmt die Komponente die Konvertierung intern.
 
-        Beispielhafte Aufrufe:
-        <co:card.body>Inhalt des Card-Bodys</co:card.body>
-        <co:card.body variant="primary" class="my-card-body">Card Body mit Klasse</co:card.body>
-    -->
-  </f:comment>
+            Beispielhafte Aufrufe:
+            <co:richtext class="feature__body">{data.bodytext -> f:format.html()}</co:richtext>
+            <co:richtext class="feature__body" content="{data.bodytext}" />
+        -->
+    </f:comment>
 
-  <f:argument name="variant" type="string" optional="{true}" />
-  <f:argument name="class" type="string" optional="{true}" />
-  <f:argument name="content" type="string" optional="{true}" />
-  <f:variable name="slotContent"><f:slot /></f:variable>
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="content" type="string" optional="{true}" />
+    <f:variable name="slotContent"><f:slot /></f:variable>
 
-  <co:cssClass value="richtext--{variant}" condition="{variant}" />
+    <fo:cssClass name="class" value="richtext" />
+    <fo:cssClass name="class" value="richtext--{variant}" condition="{variant}" />
 
-  <f:if condition="{content} || {slotContent}">
-    <div class="richtext {class}">
-      <f:if condition="{content}"><f:format.html>{content}</f:format.html></f:if>
-      <f:if condition="{slotContent}"><f:format.html>{slotContent}</f:format.html></f:if>
-    </div>
-  </f:if>
+    <f:if condition="{content} || {slotContent}">
+        <div class="{class}">
+            <f:if condition="{content}"><f:format.html>{content}</f:format.html></f:if>
+                <f:if condition="{slotContent}"><f:format.html>{slotContent}</f:format.html></f:if>
+        </div>
+    </f:if>
 </html>

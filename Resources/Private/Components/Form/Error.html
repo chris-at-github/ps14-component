@@ -1,7 +1,5 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:form.error>
@@ -23,7 +21,7 @@
     <f:argument name="id" type="string" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
 
-    <co:cssClass value="form-error" />
+    <fo:cssClass value="form-error" />
 
     <f:if condition="{errors}">
         <f:if condition="{errors -> f:count()} == 1">

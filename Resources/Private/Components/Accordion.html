@@ -1,0 +1,34 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:accordion>
+
+        Parameter für <co:accordion>:
+        - variant: (string, optional) Variante des Accordions, z.B. "default" oder "light". Standard: "default"
+        - class: (string, optional) optionale zusätzliche CSS-Klassen für das Accordion
+
+        Beispielhafte Aufrufe:
+        <co:accordion>
+            <co:accordion.item header="Titel">Inhalt</co:accordion.item>
+        </co:accordion>
+
+        <co:accordion variant="light">
+            <co:accordion.item header="Titel">Inhalt</co:accordion.item>
+        </co:accordion>
+    -->
+    </f:comment>
+
+    <f:argument name="variant" type="string" optional="{true}" default="default" />
+    <f:argument name="class" type="string" optional="{true}" />
+
+    <fo:cssClass value="accordion--{variant}" condition="{variant}" />
+
+    <ul class="accordion {class}">
+        <f:slot />
+    </ul>
+</html>

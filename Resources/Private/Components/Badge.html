@@ -1,31 +1,28 @@
 <html
-  xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-  xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-  xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-  data-namespace-typo3-fluid="true">
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:badge>
-
-        Namespace:
-          xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
 
         Parameter für <co:badge>:
         - variant: (string) z.B. "default", "primary" – bestimmt die Badge-Variante/Klasse
         - class: (string) optionale zusätzliche CSS-Klassen für die Badge
         - url: (string, optional) Link-URL, macht die Badge zu einem Link
         - rendering: (string, optional) "button", "span" – steuert das Ausgabetag, Standard: "span" ("button" für Button, "span" für statisch)
-        - disabled: (bool, optional) true/false – deaktiviert den Button
-        - prefixIcon: (string, optional) Pfad zu einem Icon, das vor dem Badge-Text angezeigt wird
-        - suffixIcon: (string, optional) Pfad zu einem Icon, das nach dem Badge-Text angezeigt wird
+        - disabled: (bool, optional) true/false – deaktiviert den Button (falls rendering="button")
+        - prefixIcon: (string, optional) Voller EXT-Pfad zur SVG-Datei, z. B. "EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg"; Icon vor dem Badge-Text, eingebettet über fo:svg.inline.
+        - suffixIcon: (string, optional) Voller EXT-Pfad zur SVG-Datei, z. B. "EXT:ps14_site/Resources/Private/Assets/Svg/Embed/check.svg"; Icon nach dem Badge-Text, eingebettet über fo:svg.inline.
 
         Beispielhafte Aufrufe:
         <co:badge variant="default">Badge</co:badge>
         <co:badge variant="default" rendering="button">Badge (Button)</co:badge>
         <co:badge variant="default" url="#">Badge (Link)</co:badge>
         <co:badge variant="default" rendering="button" disabled="true">Badge (Disabled)</co:badge>
-        <co:badge variant="default" rendering="button" prefixIcon="/fileadmin/icons/x.svg">Close</co:badge>
-        <co:badge variant="default" rendering="button" prefixIcon="/fileadmin/icons/x.svg" suffixIcon="/fileadmin/icons/check.svg">Close</co:badge>
+        <co:badge variant="default" rendering="button" prefixIcon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/close.svg">Close</co:badge>
+        <co:badge variant="default" rendering="button" prefixIcon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/close.svg">Close</co:badge>
     -->
     </f:comment>
 
@@ -37,11 +34,11 @@
     <f:argument name="prefixIcon" type="string" optional="{true}" />
     <f:argument name="suffixIcon" type="string" optional="{true}" />
 
-    <co:cssClass value="badge" />
-    <co:cssClass value="badge--{variant}" condition="{variant}" />
-    <co:cssClass value="badge--interactive" condition="{rendering} == 'button' || {url}" />
-    <co:cssClass value="badge--icon-prefix" condition="{prefixIcon}" />
-    <co:cssClass value="badge--icon-suffix" condition="{suffixIcon}" />
+    <fo:cssClass value="badge" />
+    <fo:cssClass value="badge--{variant}" condition="{variant}" />
+    <fo:cssClass value="badge--interactive" condition="{rendering} == 'button' || {url}" />
+    <fo:cssClass value="badge--icon-prefix" condition="{prefixIcon}" />
+    <fo:cssClass value="badge--icon-suffix" condition="{suffixIcon}" />
 
     <f:section name="Content">
         <f:if condition="{prefixIcon}">

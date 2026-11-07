@@ -1,0 +1,66 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+        <!--
+            Dokumentation: Fluid-Komponente <co:form.group.choice>
+
+            Rendert einen <fieldset>-Wrapper mit gemeinsamem Label (Legend), optionaler Beschreibung
+            und Fehlerausgabe für eine Gruppe von Choice-Feldern (Checkbox, Radio).
+            Die einzelnen Felder werden über den Slot übergeben – typischerweise als <co:form.item.choice>-Kinder.
+
+            Besonderheiten:
+            - variant setzt die BEM-Modifier form-item-group--{variant} und form-item-group__choices--{variant}.
+            - disabled setzt den Modifier form-item-group--disabled auf dem <fieldset>.
+            - required zeigt einen Pflichtfeld-Hinweis im Label an.
+            - Wird direkt in Powermail-Partials (Check.html, Radio.html) verwendet.
+
+            Parameter:
+            - label: (string, Pflicht) Gruppen-Label (wird als <legend> gerendert)
+            - description: (string, optional) Beschreibungstext unterhalb des Labels
+            - errors: (string[], optional) Fehlermeldungen für die Gruppe
+            - disabled: (boolean, optional) Deaktiviert die gesamte Gruppe
+            - required: (boolean, optional) Markiert die Gruppe als Pflichtfeld
+            - variant: (string, optional) Optische Variante, z.B. "horizontal"
+
+            Beispiel:
+            <co:form.group.choice label="Interessen" required="true" variant="horizontal">
+                <co:form.item.choice label="Sport" type="checkbox">
+                    <input type="checkbox" id="{id}" name="interests[]" class="{fieldClass}" value="sport" />
+                </co:form.item.choice>
+            </co:form.group.choice>
+
+            Dokumentation: Documentation/Form.Group.Choice.md
+        -->
+    </f:comment>
+
+    <f:argument name="label" type="string" />
+    <f:argument name="description" type="string" optional="{true}" />
+    <f:argument name="errors" type="string[]" optional="{true}" />
+    <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="required" type="boolean" optional="{true}" />
+    <f:argument name="variant" type="string" optional="{true}" />
+
+    <fo:cssClass name="groupClass" value="form-item-group" />
+    <fo:cssClass name="groupClass" value="form-item-group--choices" />
+    <fo:cssClass name="groupClass" value="form-item-group--{variant}" condition="{variant}" />
+    <fo:cssClass name="groupClass" value="form-item-group--disabled" condition="{disabled}" />
+
+    <fo:cssClass name="choicesClass" value="form-item-group__choices" />
+    <fo:cssClass name="choicesClass" value="form-item-group__choices--{variant}" condition="{variant}" />
+
+    <fieldset class="{groupClass}">
+        <legend class="form-label form-item-group__label">{label}
+            <f:if condition="{required}">
+                <span class="form-label__required"><f:translate key="label.required" domain="ps14_component.messages" /></span>
+            </f:if>
+        </legend>
+
+        <co:form.description class="form-item-group__description" description="{description}" />
+
+        <div class="{choicesClass}">
+            <f:slot />
+        </div>
+
+        <co:form.error class="form-item-group__error" errors="{errors}" />
+    </fieldset>
+</html>

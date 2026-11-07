@@ -1,21 +1,21 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers" xmlns="http://www.w3.org/1999/html"
-      data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
         <!--
             Dokumentation: Fluid-Komponente <co:form.select>
 
             Parameter:
-            - id: (string) ID des Feldes (optional, wird automatisch generiert, falls leer)
+            - id: (string, optional) ID des Feldes – wird automatisch generiert, falls leer
             - name: (string) Name des Feldes (Pflicht)
-            - value: (string) Vorbelegter Wert (optional)
+            - value: (string, optional) Vorbelegter Wert – die Option mit value==value wird als ausgewählt markiert
             - label: (string) Label-Text (Pflicht)
-            - required: (bool|string) true/false – zeigt "erforderlich" an und setzt das required-Attribut (optional)
-            - description: (string) Beschreibungstext unter dem Label (optional)
-            - class: (string) Zusätzliche CSS-Klassen (optional)
-            - errors: (array) Fehlernachrichten als Array (optional)
+            - required: (bool|string, optional) true/false – zeigt "erforderlich" an und setzt das required-Attribut
+            - description: (string, optional) Beschreibungstext unter dem Label
+            - class: (string, optional) Zusätzliche CSS-Klassen
+            - errors: (array, optional) Fehlernachrichten als Array
             - options: (array) Array mit Select-Optionen, z.B. [{value: '1', label: 'Option 1'}] (Pflicht)
+            - disabled: (bool, optional) true/false – deaktiviert das Feld und verhindert die Auswahl
+            - attributes: (array, optional) Zusätzliche HTML-Attribute als Key/Value-Map, z.B. multiple, size, autocomplete oder data-* Attribute
 
             Beschreibung:
             Diese Komponente erzeugt ein <select>-Feld mit Label, Beschreibung, Fehlerausgabe und dynamischen Optionen. Die CSS-Klassen werden automatisch ergänzt. Die Option mit value==value wird als ausgewählt markiert.
@@ -23,6 +23,7 @@
             Beispielhafte Aufrufe:
             <co:form.select id="form-field--country" name="country" label="Land" options="{0: {value: 'de', label: 'Deutschland'}, 1: {value: 'at', label: 'Österreich'}}" value="de" />
             <co:form.select name="gender" label="Geschlecht" required="true" options="{0: {value: 'm', label: 'Männlich'}, 1: {value: 'w', label: 'Weiblich'}}" />
+            <co:form.select name="country" label="Land" options="{0: {value: 'de', label: 'Deutschland'}}" attributes="{size: '5', 'data-pristine-required-message': 'Bitte Land wählen'}" />
         -->
     </f:comment>
 
@@ -36,47 +37,25 @@
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="options" type="array" optional="{true}" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="attributes" type="array" optional="{true}" default="{}" />
 
-    <f:if condition="{id} == ''">
-        <f:variable name="id">form-field--{fo:randomId()}</f:variable>
-    </f:if>
-
-    <co:cssClass name="itemClass" value="form-item" />
-    <co:cssClass name="itemClass" value="form-item--disabled" condition="{disabled}" />
-
-    <co:cssClass name="fieldClass" value="{class}" condition="{class}" />
-    <co:cssClass name="fieldClass" value="form-field form-field--default form-field--select" />
-    <co:cssClass name="fieldClass" value="form-field--error" condition="{errors}" />
-
-    <div class="{itemClass}">
-        <co:form.label id="{id}" label="{label}" required="{required}" />
-        <co:form.description description="{description}" />
-
+    <co:form.item.select
+        label="{label}"
+        required="{required}"
+        description="{description}"
+        errors="{errors}"
+    >
         <select
-          id="{id}"
-          name="{name}"
-          class="{fieldClass}"
-          disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
-          required="{f:if(condition: '{required}', then: 'required')}">
+            id="{id}"
+            name="{name}"
+            class="{fieldClass}"
+            disabled="{f:if(condition: '{disabled}', then: 'disabled')}"
+            required="{f:if(condition: '{required}', then: 'required')}"
+            <f:for each="{attributes}" as="attrValue" key="attrName"> {attrName}="{attrValue}"</f:for>
+        >
             <f:for each="{options}" as="option">
                 <option value="{option.value}" selected="{f:if(condition: '{option.value} == {value}', then: 'selected')}">{option.label}</option>
             </f:for>
         </select>
-
-        <co:form.error errors="{errors}" />
-    </div>
-
-<f:comment>
-    <!--
-    <f:if condition="{property}">
-        <f:form.textfield
-          id="{id}"
-          name="{name}"
-          value="{value}"
-          type="{type}"
-          class="form-field form-field--default form-field--{type} {class} {f:if(condition: errors, then: errorClass)}"
-          required="{required}" />
-    </f:if>
-    -->
-</f:comment>
+    </co:form.item.select>
 </html>

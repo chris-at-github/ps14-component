@@ -1,25 +1,41 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-      xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
-      xmlns:co="http://typo3.org/ns/Ps14/Component/ViewHelpers"
-      data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
     <f:comment>
     <!--
         Dokumentation: Fluid-Komponente <co:form.checkbox>
 
-        Parameter:
-        - id: (string) ID des Feldes (optional, wird automatisch generiert, falls leer)
-        - name: (string) Name des Feldes (Pflicht)
-        - value: (string) Wert des Feldes (optional, Standard: "1")
-        - checked: (bool) Ob die Checkbox aktiviert ist (optional)
-        - label: (mixed) Label-Text oder HTML-Inhalt (Pflicht)
-        - class: (string) Zusätzliche CSS-Klassen (optional)
-        - errors: (array) Fehlernachrichten als Array (optional)
-        - hiddenValueField: (bool) Soll ein verstecktes Feld für den leeren Wert gerendert werden (Standard: true)
-        - required: (bool) Optional, gibt an, ob das Feld ein Pflichtfeld ist (wird an das Label weitergereicht)
-        - disabled: (bool) Optional, gibt an, ob die Checkbox deaktiviert ist (Standard: false)
-
         Beschreibung:
-        Erzeugt eine Checkbox mit Label im gewünschten Markup. Das Label kann auch HTML enthalten (z.B. Links). Das Argument hiddenValueField steuert, ob ein verstecktes Feld für den leeren Wert gerendert wird (wichtig für Formulare mit mehreren Checkboxen). Das Argument required wird an das Label weitergegeben und kann für Barrierefreiheit genutzt werden. Das Argument disabled deaktiviert die Checkbox.
+        Rendert eine einzelne Checkbox mit zugehörigem Label und optionaler Fehlerausgabe
+        im standardisierten Form-Markup (BEM: form-field, form-field--checkbox, form-item,
+        form-item--choice, form-item--checkbox). Der Label-Inhalt darf HTML enthalten,
+        z.B. Links für Datenschutz- oder AGB-Zustimmungen.
+
+        Verhalten:
+        - Wird keine `id` übergeben, wird automatisch eine eindeutige ID generiert
+            (`form-field--{random}`), damit das Label per `for`-Attribut korrekt mit dem
+            Input verknüpft werden kann.
+        - Ist `hiddenValueField=true` (Standard), wird zusätzlich ein verstecktes Feld
+            mit leerem Wert ausgegeben. Dadurch enthält der Request den Feldnamen auch
+            dann, wenn die Checkbox nicht aktiviert wurde (wichtig für Single-Checkboxen
+            in Formularen).
+        - `required` wird sowohl am Input als auch am Label gesetzt, damit das
+            Pflichtfeld semantisch und visuell erkennbar ist.
+        - Werden `errors` übergeben, erhält der Block den Modifier `form-field--error`
+            und die Fehlermeldungen werden über `<co:form.error>` ausgegeben.
+
+        Parameter:
+        - id (string, optional): ID des Inputs. Wird automatisch generiert, falls leer.
+        - name (string, Pflicht): Name des Feldes (request key).
+        - label (string, Pflicht): Label-Text – HTML ist erlaubt (z.B. Inline-Links).
+        - value (string, optional, Standard "1"): Wert, der bei aktiver Checkbox gesendet wird.
+        - checked (boolean, optional): Vorbelegung als aktiviert.
+        - required (boolean, optional): Markiert das Feld als Pflichtfeld.
+        - class (string, optional): Zusätzliche CSS-Klassen am Input.
+        - errors (string[], optional): Fehlermeldungen, aktiviert Fehler-Styling.
+        - hiddenValueField (boolean, Standard true): Verstecktes Feld für leeren Wert.
+        - disabled (boolean, optional, Standard false): Deaktiviert die Checkbox.
+
+        Vollständige Dokumentation: ./Documentation/Form.Checkbox.md
 
         Beispielhafte Aufrufe:
         <co:form.checkbox id="form-field--7erhk1" name="checkbox" label="Hiermit akzeptiere ich die <a href='#' class='link link--default'>Nutzungsbedingungen</a>" checked="true" />
@@ -33,19 +49,20 @@
     <f:argument name="label" type="string" />
     <f:argument name="value" type="string" default="1" />
     <f:argument name="checked" type="boolean" optional="{true}" />
+    <f:argument name="required" type="boolean" optional="{true}" />
     <f:argument name="class" type="string" optional="{true}" />
     <f:argument name="errors" type="string[]" optional="{true}" />
     <f:argument name="hiddenValueField" type="boolean" default="true" />
     <f:argument name="disabled" type="boolean" optional="{true}" />
+    <f:argument name="attributes" type="array" optional="{true}" default="{}" />
 
-    <f:if condition="{id} == ''">
-        <f:variable name="id">form-field--{fo:randomId()}</f:variable>
-    </f:if>
-
-    <co:cssClass value="form-field form-field--checkbox" />
-    <co:cssClass value="form-field--error" condition="{errors}" />
-
-    <div class="form-item form-item--choice form-item--checkbox">
+    <co:form.item.choice
+        label="{label}"
+        required="{required}"
+        description="{description}"
+        errors="{errors}"
+        type="checkbox"
+    >
         <f:if condition="{hiddenValueField}">
             <input type="hidden" name="{name}" value="" />
         </f:if>
@@ -53,12 +70,12 @@
             type="checkbox"
             id="{id}"
             name="{name}"
-            class="{class}"
+            class="{fieldClass}"
             value="{value}"
             {f:if(condition: checked, then: 'checked')}
             {f:if(condition: disabled, then: 'disabled')}
-        >
-        <co:form.label id="{id}" label="{label}" required="{required}" />
-        <co:form.error errors="{errors}" />
-    </div>
+            {f:if(condition: required, then: 'required')}
+            <f:for each="{attributes}" as="attrValue" key="attrName"> {attrName}="{attrValue}"</f:for>
+        />
+    </co:form.item.choice>
 </html>

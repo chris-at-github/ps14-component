@@ -1,0 +1,48 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:accordion.item>
+
+        Parameter für <co:accordion.item>:
+        - header: (string, optional) Text der Accordion-Überschrift
+        - headerLayout: (integer, optional) Überschriften-Typ als Integer (1–6). Standard: 2
+        - id: (string, optional) ID für die ARIA-Verknüpfung. Wird automatisch generiert, wenn nicht angegeben.
+        - class: (string, optional) optionale zusätzliche CSS-Klassen für das Accordion-Item
+        - icon: (string, optional) Voller EXT-Pfad zur SVG-Datei für das Icon im Toggle-Button. Standard: "EXT:ps14_component/Resources/Private/Assets/Svg/Embed/arrow-down.svg"
+
+        Beispielhafte Aufrufe:
+        <co:accordion.item header="Titel">Inhalt des Accordions</co:accordion.item>
+
+        <co:accordion.item header="Titel" headerLayout="3" icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/arrow-right.svg">
+            <p>Inhalt des Accordions</p>
+        </co:accordion.item>
+    -->
+    </f:comment>
+
+    <f:argument name="header" type="string" optional="{true}" />
+    <f:argument name="headerLayout" type="integer" optional="{true}" default="2" />
+    <f:argument name="id" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="icon" type="string" optional="{true}" default="EXT:ps14_component/Resources/Private/Assets/Svg/Embed/arrow-down.svg" />
+
+    <f:if condition="{id} == ''">
+        <f:variable name="id">{fo:randomId()}</f:variable>
+    </f:if>
+
+    <li class="accordion__item collapse {class}">
+        <co:heading layout="{headerLayout}" class="collapse__header accordion__header">
+            <button class="accordion__toggle collapse__toggle" type="button" aria-expanded="false" aria-controls="collapse-body--{id}" id="collapse-button--{id}">
+                <span class="accordion__toggle-label">{header}</span>
+                <fo:svg.inline source="{icon}" class="accordion__icon" />
+            </button>
+        </co:heading>
+        <div class="accordion__body collapse__body" id="collapse-body--{id}" role="region" aria-labelledby="collapse-button--{id}" hidden>
+            <f:slot />
+        </div>
+    </li>
+</html>
