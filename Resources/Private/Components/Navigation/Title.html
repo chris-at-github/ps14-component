@@ -1,0 +1,58 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:navigation.title>
+
+        Parameter für <co:navigation.title>:
+        - variant: (string, optional) Modifier, z. B. "primary" → "heading--primary" (nur zusammen mit layout)
+        - layout: (string, optional) Layout-Variante, z. B. "2" → "heading--layout-2"; rendert einen Wrapper div.heading
+        - class: (string, optional) zusätzliche CSS-Klassen
+        - type: (int, optional) Überschriften-Typ (1–6, 0 = div); bei 100 (Standard) wird nichts gerendert
+        - id: (string, optional) ID der Überschrift, z. B. für aria-labelledby von <co:navigation>
+
+        Slot:
+        - Standard-Slot: Inhalt der Überschrift; ist er leer, wird nichts gerendert
+
+        Beispielhafte Aufrufe:
+        <co:navigation.title type="2">
+            Überschrift
+        </co:navigation.title>
+
+        <co:navigation.title type="2" layout="1" variant="primary">
+            Überschrift mit Layout und Variante
+        </co:navigation.title>
+    -->
+    </f:comment>
+
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="layout" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="type" type="int" optional="{true}" default="100" />
+    <f:argument name="id" type="string" optional="{true}" />
+
+    <f:variable name="title"><f:slot /></f:variable>
+
+    <f:if condition="{title} != '' && {type} != 100">
+        <f:if condition="{layout}">
+            <f:then>
+                <fo:cssClass value="heading--{variant}" condition="{variant}" />
+                <fo:cssClass value="heading--layout-{layout}" condition="{layout}" />
+
+                <div id="{id}" class="heading {class}">
+                    <co:heading layout="{type}" class="heading__main">
+                        <f:slot />
+                    </co:heading>
+                </div>
+            </f:then>
+            <f:else>
+                <co:heading id="{id}" layout="{type}" class="{class}">
+                    <f:slot />
+                </co:heading>
+            </f:else>
+        </f:if>
+    </f:if>
+</html>

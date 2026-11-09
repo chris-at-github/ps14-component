@@ -1,0 +1,39 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:navigation.list.item>
+
+        Parameter für <co:navigation.list.item>:
+        - link: (string, optional) Link-Angabe (URL, t3://-URI o. ä.), wird über f:link.typolink ausgewertet
+        - icon: (string, optional) Voller EXT-Pfad zur SVG-Datei, z. B. "EXT:ps14_site/Resources/Private/Assets/Svg/Embed/arrow-right.svg"; eingebettet über fo:svg.inline
+        - class: (string, optional) zusätzliche CSS-Klassen für den Link
+        - current: (bool, optional) markiert den Link als aktuelle Seite (aria-current="page")
+
+        Slot:
+        - Standard-Slot: Linktext
+
+        Beispielhafte Aufrufe:
+        <co:navigation.list.item link="t3://page?uid=1" icon="EXT:ps14_site/Resources/Private/Assets/Svg/Embed/arrow-right.svg">Seitenname</co:navigation.list.item>
+        <co:navigation.list.item link="https://example.com">Linktext ohne Icon</co:navigation.list.item>
+        <co:navigation.list.item link="{page.link}" current="{page.current}">{page.title}</co:navigation.list.item>
+    -->
+    </f:comment>
+
+    <f:argument name="link" type="string" optional="{true}" />
+    <f:argument name="icon" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="current" type="boolean" optional="{true}" />
+
+    <f:variable name="ariaCurrent" value="{f:if(condition: current, then: 'page')}" />
+
+    <f:link.typolink parameter="{link}" class="navigation-list__link {class}" additionalAttributes="{'aria-current': ariaCurrent}">
+        <span class="navigation-list__link-text"><f:slot /></span>
+        <f:if condition="{icon}">
+            <fo:svg.inline source="{icon}" class="navigation-list__link-icon" />
+        </f:if>
+    </f:link.typolink>
+</html>

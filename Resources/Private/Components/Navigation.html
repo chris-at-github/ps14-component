@@ -1,0 +1,52 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:fo="http://typo3.org/ns/Ps14/Foundation/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/Ps14/Component/Components/ComponentCollection"
+    data-namespace-typo3-fluid="true">
+    <f:comment>
+    <!--
+        Dokumentation: Fluid-Komponente <co:navigation>
+
+        Parameter für <co:navigation>:
+        - variant: (string, optional) Modifier, z. B. "footer" → "navigation--footer"
+        - class: (string, optional) zusätzliche CSS-Klassen für das nav-Element
+        - title: (string, optional) Wert für aria-label (falls titleType = 100 oder kein id gesetzt ist)
+        - titleType: (int, optional) Steuerung der Barrierefreiheit: 100 = aria-label, sonst aria-labelledby; Standard: 100
+        - id: (string, optional) ID der sichtbaren Überschrift für aria-labelledby (falls titleType != 100)
+
+        Slot:
+        - Standard-Slot: Inhalt der Navigation, z. B. Überschrift und Liste
+
+        Beispielhafte Aufrufe:
+        <co:navigation title="Hauptnavigation">
+            Inhalt
+        </co:navigation>
+
+        <co:navigation title="Navigation" titleType="2" id="nav-title">
+            <co:navigation.title id="nav-title" type="2">Navigation</co:navigation.title>
+            Inhalt
+        </co:navigation>
+    -->
+    </f:comment>
+
+    <f:argument name="variant" type="string" optional="{true}" />
+    <f:argument name="class" type="string" optional="{true}" />
+    <f:argument name="title" type="string" optional="{true}" />
+    <f:argument name="titleType" type="int" optional="{true}" default="100" />
+    <f:argument name="id" type="string" optional="{true}" />
+
+    <fo:cssClass value="navigation--{variant}" condition="{variant}" />
+
+    <f:if condition="{title} == '' || {titleType} == 100 || {id} == ''">
+        <f:then>
+            <nav class="navigation {class}" aria-label="{title}">
+                <f:slot />
+            </nav>
+        </f:then>
+        <f:else>
+            <nav class="navigation {class}" aria-labelledby="{id}">
+                <f:slot />
+            </nav>
+        </f:else>
+    </f:if>
+</html>
