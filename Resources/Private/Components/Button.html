@@ -16,7 +16,7 @@
         - id: (string) optionale ID für den Button
         - class: (string) optionale zusätzliche CSS-Klassen für den Button
         - url: (string, optional) URL – wird als <f:link.typolink> gerendert statt als <button>. Unterstützt TYPO3-Link-Syntax (z.B. t3://page?uid=1).
-        - label: (string, optional) Setzt ein aria-label auf das Button-/Link-Element, um den zugänglichen Namen zu ergänzen bzw. zu überschreiben (z.B. bei generischem Button-Text wie "Weiterlesen"). Wird nur gerendert, wenn ein Wert übergeben wird – sonst bleibt der sichtbare Slot-Text der zugängliche Name.
+        - label: (string, optional) Setzt ein aria-label auf das Button-/Link-Element, um den zugänglichen Namen zu ergänzen bzw. zu überschreiben (z.B. bei generischem Button-Text wie "Weiterlesen"). Ohne Wert bleibt das Attribut leer (wird vom Tidy-ViewHelper entfernt) – dann ist der sichtbare Slot-Text der zugängliche Name.
 
         Beispielhafte Aufrufe:
         <co:button>Button</co:button>
